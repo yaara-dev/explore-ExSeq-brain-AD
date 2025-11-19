@@ -443,12 +443,15 @@
       </div>
     </div>
 
-    <!-- Tab 2: 3D View -->
+        <!-- Tab 2: 3D View -->
     <div id="tab2" class="tab-content">
+      <div style="margin-bottom: 8px; padding: 6px; background: #f0f0f0; border-radius: 4px; font-size: 11px; color: #666;">
+        <strong>3D Controls:</strong> Click and drag to rotate | Shift+Click or Right-click to pan | Double-click to reset view
+      </div>
       <div class="chart-container" style="display: flex; gap: 10px; align-items: flex-start; overflow: hidden; max-width: 100%;">
         <div style="flex: 1; min-width: 0; position: relative;">
-          <canvas id="scatterplot3d" style="display: block; border: 1px solid #ddd; border-radius: 4px;"></canvas>
-          <svg id="axes3d" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+          <canvas id="scatterplot3d" style="display: block; border: 1px solid #ddd; border-radius: 4px; cursor: grab;"></canvas>
+          <svg id="axes3d" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1; display: none;"></svg>
         </div>
         <div id="legend3d" style="min-width: 180px; max-width: 220px; overflow-y: auto; overflow-x: hidden; padding: 10px; background: #f9f9f9; border-radius: 6px; border: 1px solid #ddd; display: none; flex-shrink: 0; align-self: stretch;">
           <h3 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #333;">Gene Colors</h3>
@@ -548,6 +551,16 @@
     let renderTimeout = null;
     let hoveredPoint = null;
     let currentTab = 1;
+    
+    // 3D rotation and pan state
+    let rotationX = Math.PI / 6; // 30 degrees
+    let rotationY = Math.PI / 6; // 30 degrees
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let isPanning = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
 
     // Tab switching function
     function switchTab(tabNumber) {
@@ -1264,8 +1277,252 @@
         .style('font-size', '10px')
         .text('Y Coordinate');
       
-      // Setup canvas interactivity
+      // Setup canvas interactivity for hover
       setupCanvasInteractivity(canvas3d, xScale3d, yScale3d, false);
+      
+      // Setup 3D rotation and pan controls
+      setup3DControls(canvas3d);
+    }
+    
+    function setup3DControls(canvasEl) {
+      if (!canvasEl) return;
+      
+      canvasEl.addEventListener('mousedown', function(event) {
+        if (event.shiftKey || event.button === 2) {
+          // Pan mode (Shift+click or right-click)
+          isPanning = true;
+          canvasEl.style.cursor = 'grabbing';
+        } else {
+          // Rotate mode (normal click)
+          isDragging = true;
+          canvasEl.style.cursor = 'grabbing';
+        }
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+        event.preventDefault();
+      });
+      
+      canvasEl.addEventListener('mousemove', function(event) {
+        if (isDragging) {
+          // Rotate
+          const deltaX = event.clientX - lastMouseX;
+          const deltaY = event.clientY - lastMouseY;
+          rotationY += deltaX * 0.01;
+          rotationX += deltaY * 0.01;
+          // Clamp rotationX to prevent flipping
+          rotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotationX));
+          lastMouseX = event.clientX;
+          lastMouseY = event.clientY;
+          updateVisualization();
+        } else if (isPanning) {
+          // Pan
+          const deltaX = event.clientX - lastMouseX;
+          const deltaY = event.clientY - lastMouseY;
+          panX += deltaX;
+          panY += deltaY;
+          lastMouseX = event.clientX;
+          lastMouseY = event.clientY;
+          updateVisualization();
+        }
+      });
+      
+      canvasEl.addEventListener('mouseup', function(event) {
+        isDragging = false;
+        isPanning = false;
+        canvasEl.style.cursor = 'grab';
+      });
+      
+      canvasEl.addEventListener('mouseleave', function(event) {
+        isDragging = false;
+        isPanning = false;
+        canvasEl.style.cursor = 'grab';
+      });
+      
+      // Prevent context menu on right-click
+      canvasEl.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+      });
+      
+      // Reset on double-click
+      canvasEl.addEventListener('dblclick', function(event) {
+        rotationX = Math.PI / 6;
+        rotationY = Math.PI / 6;
+        panX = 0;
+        panY = 0;
+        updateVisualization();
+      });
+    }
+    
+    function draw3DAxes(ctxEl, xExtent, yExtent, zExtent, width, height) {
+      if (!ctxEl || !xExtent || !yExtent || !zExtent) return;
+      
+      ctxEl.save();
+      ctxEl.lineWidth = 2;
+      ctxEl.font = '11px sans-serif';
+      ctxEl.textAlign = 'center';
+      ctxEl.textBaseline = 'middle';
+      
+      // Calculate center point (origin) in 3D space
+      const centerX3D = (xExtent[0] + xExtent[1]) / 2;
+      const centerY3D = (yExtent[0] + yExtent[1]) / 2;
+      const centerZ3D = (zExtent[0] + zExtent[1]) / 2;
+      
+      // Project origin to screen
+      const origin = project3D(centerX3D, centerY3D, centerZ3D, xExtent, yExtent, zExtent, width, height);
+      
+      // Generate tick values for each axis
+      const xTicks = generateTicks(xExtent[0], xExtent[1], 5);
+      const yTicks = generateTicks(yExtent[0], yExtent[1], 5);
+      const zTicks = generateTicks(zExtent[0], zExtent[1], 5);
+      
+      // Draw X axis (red) - from origin to max X
+      const xEnd = project3D(xExtent[1], centerY3D, centerZ3D, xExtent, yExtent, zExtent, width, height);
+      ctxEl.strokeStyle = '#cc0000';
+      ctxEl.lineWidth = 2;
+      ctxEl.beginPath();
+      ctxEl.moveTo(origin.x, origin.y);
+      ctxEl.lineTo(xEnd.x, xEnd.y);
+      ctxEl.stroke();
+      
+      // Draw X axis ticks and labels
+      xTicks.forEach(tick => {
+        const tickPos = project3D(tick, centerY3D, centerZ3D, xExtent, yExtent, zExtent, width, height);
+        const dx = xEnd.x - origin.x;
+        const dy = xEnd.y - origin.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / len * 5;
+        const perpY = dx / len * 5;
+        
+        ctxEl.strokeStyle = '#cc0000';
+        ctxEl.lineWidth = 1;
+        ctxEl.beginPath();
+        ctxEl.moveTo(tickPos.x - perpX, tickPos.y - perpY);
+        ctxEl.lineTo(tickPos.x + perpX, tickPos.y + perpY);
+        ctxEl.stroke();
+        
+        ctxEl.fillStyle = '#666';
+        ctxEl.font = '10px sans-serif';
+        ctxEl.textAlign = 'center';
+        ctxEl.fillText(Math.round(tick).toString(), tickPos.x + perpX * 2, tickPos.y + perpY * 2);
+      });
+      
+      // X axis label
+      ctxEl.fillStyle = '#cc0000';
+      ctxEl.font = 'bold 11px sans-serif';
+      ctxEl.fillText('X Coordinate', xEnd.x + 20, xEnd.y);
+      
+      // Draw Y axis (green) - from origin to max Y
+      const yEnd = project3D(centerX3D, yExtent[1], centerZ3D, xExtent, yExtent, zExtent, width, height);
+      ctxEl.strokeStyle = '#00aa00';
+      ctxEl.lineWidth = 2;
+      ctxEl.beginPath();
+      ctxEl.moveTo(origin.x, origin.y);
+      ctxEl.lineTo(yEnd.x, yEnd.y);
+      ctxEl.stroke();
+      
+      // Draw Y axis ticks and labels
+      yTicks.forEach(tick => {
+        const tickPos = project3D(centerX3D, tick, centerZ3D, xExtent, yExtent, zExtent, width, height);
+        const dx = yEnd.x - origin.x;
+        const dy = yEnd.y - origin.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / len * 5;
+        const perpY = dx / len * 5;
+        
+        ctxEl.strokeStyle = '#00aa00';
+        ctxEl.lineWidth = 1;
+        ctxEl.beginPath();
+        ctxEl.moveTo(tickPos.x - perpX, tickPos.y - perpY);
+        ctxEl.lineTo(tickPos.x + perpX, tickPos.y + perpY);
+        ctxEl.stroke();
+        
+        ctxEl.fillStyle = '#666';
+        ctxEl.font = '10px sans-serif';
+        ctxEl.fillText(Math.round(tick).toString(), tickPos.x + perpX * 2, tickPos.y + perpY * 2);
+      });
+      
+      // Y axis label
+      ctxEl.fillStyle = '#00aa00';
+      ctxEl.font = 'bold 11px sans-serif';
+      ctxEl.fillText('Y Coordinate', yEnd.x + 20, yEnd.y);
+      
+      // Draw Z axis (blue) - from origin to max Z
+      const zEnd = project3D(centerX3D, centerY3D, zExtent[1], xExtent, yExtent, zExtent, width, height);
+      ctxEl.strokeStyle = '#0000cc';
+      ctxEl.lineWidth = 2;
+      ctxEl.beginPath();
+      ctxEl.moveTo(origin.x, origin.y);
+      ctxEl.lineTo(zEnd.x, zEnd.y);
+      ctxEl.stroke();
+      
+      // Draw Z axis ticks and labels
+      zTicks.forEach(tick => {
+        const tickPos = project3D(centerX3D, centerY3D, tick, xExtent, yExtent, zExtent, width, height);
+        const dx = zEnd.x - origin.x;
+        const dy = zEnd.y - origin.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / len * 5;
+        const perpY = dx / len * 5;
+        
+        ctxEl.strokeStyle = '#0000cc';
+        ctxEl.lineWidth = 1;
+        ctxEl.beginPath();
+        ctxEl.moveTo(tickPos.x - perpX, tickPos.y - perpY);
+        ctxEl.lineTo(tickPos.x + perpX, tickPos.y + perpY);
+        ctxEl.stroke();
+        
+        ctxEl.fillStyle = '#666';
+        ctxEl.font = '10px sans-serif';
+        ctxEl.fillText(Math.round(tick).toString(), tickPos.x + perpX * 2, tickPos.y + perpY * 2);
+      });
+      
+      // Z axis label
+      ctxEl.fillStyle = '#0000cc';
+      ctxEl.font = 'bold 11px sans-serif';
+      ctxEl.fillText('Z Coordinate', zEnd.x + 20, zEnd.y);
+      
+      // Draw origin point
+      ctxEl.fillStyle = '#000';
+      ctxEl.beginPath();
+      ctxEl.arc(origin.x, origin.y, 4, 0, Math.PI * 2);
+      ctxEl.fill();
+      
+      ctxEl.restore();
+    }
+    
+    function generateTicks(min, max, count) {
+      const ticks = [];
+      const range = max - min;
+      // Use nice round numbers
+      const niceRange = niceNumber(range);
+      const niceStep = niceRange / (count - 1);
+      const niceMin = Math.floor(min / niceStep) * niceStep;
+      
+      for (let i = 0; i < count; i++) {
+        const tick = niceMin + niceStep * i;
+        if (tick >= min && tick <= max) {
+          ticks.push(tick);
+        }
+      }
+      
+      // Always include min and max
+      if (ticks.length === 0 || ticks[0] !== min) ticks.unshift(min);
+      if (ticks[ticks.length - 1] !== max) ticks.push(max);
+      
+      return ticks;
+    }
+    
+    function niceNumber(range) {
+      const exponent = Math.floor(Math.log10(range));
+      const fraction = range / Math.pow(10, exponent);
+      let niceFraction;
+      
+      if (fraction <= 1) niceFraction = 1;
+      else if (fraction <= 2) niceFraction = 2;
+      else if (fraction <= 5) niceFraction = 5;
+      else niceFraction = 10;
+      
+      return niceFraction * Math.pow(10, exponent);
     }
 
     function setupDashboard(xExtent, yExtent) {
@@ -1417,6 +1674,16 @@
       else canvasInteractivitySetup3d = true;
       
       canvasEl.addEventListener('mousemove', function(event) {
+        // Don't show tooltip if dragging or panning
+        if (isDragging || isPanning) {
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = null;
+          }
+          document.getElementById('tooltip').style.display = 'none';
+          return;
+        }
+        
         if (!filteredData || filteredData.length === 0 || !xScaleEl || !yScaleEl) return;
         
         // Throttle hover detection for performance
@@ -1517,28 +1784,48 @@
       });
     }
 
-    // 3D projection function (isometric projection)
-    function project3D(x, y, z, xExtent, yExtent, zExtent, width, height) {
-      // Normalize coordinates to 0-1 range
+    // 3D projection function with rotation
+    function project3D(x, y, z, xExtent, yExtent, zExtent, width, height, useRotation = true) {
+      // Normalize coordinates to 0-1 range, then scale to -1 to 1
       const nx = (xExtent[1] - xExtent[0]) > 0 ? (x - xExtent[0]) / (xExtent[1] - xExtent[0]) : 0.5;
       const ny = (yExtent[1] - yExtent[0]) > 0 ? (y - yExtent[0]) / (yExtent[1] - yExtent[0]) : 0.5;
       const nz = (zExtent[1] - zExtent[0]) > 0 ? (z - zExtent[0]) / (zExtent[1] - zExtent[0]) : 0.5;
       
-      // Isometric projection: standard isometric view
-      // x' = (x - z) * sqrt(3) / 2, y' = y + (x + z) / 2
-      const sqrt3_2 = Math.sqrt(3) / 2; // ≈ 0.866
-      const isoX = (nx - nz) * sqrt3_2;
-      const isoY = ny + (nx + nz) * 0.5;
+      // Convert to -1 to 1 range (centered)
+      let px = (nx - 0.5) * 2;
+      let py = (ny - 0.5) * 2;
+      let pz = (nz - 0.5) * 2;
       
-      // Scale to canvas with margins
+      if (useRotation) {
+        // Apply rotation around Y axis (horizontal rotation)
+        const cosY = Math.cos(rotationY);
+        const sinY = Math.sin(rotationY);
+        const tempX = px * cosY - pz * sinY;
+        pz = px * sinY + pz * cosY;
+        px = tempX;
+        
+        // Apply rotation around X axis (vertical rotation)
+        const cosX = Math.cos(rotationX);
+        const sinX = Math.sin(rotationX);
+        const tempY = py * cosX - pz * sinX;
+        pz = py * sinX + pz * cosX;
+        py = tempY;
+      }
+      
+      // Scale to canvas with margins and apply pan
       const margin = { top: 30, right: 30, bottom: 45, left: 45 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
       
-      const px = margin.left + (isoX + 0.5) * plotWidth;
-      const py = margin.top + (1 - isoY) * plotHeight;
+      // Project to 2D (orthographic projection)
+      const scale = Math.min(plotWidth, plotHeight) * 0.4; // Scale factor
+      const screenX = margin.left + plotWidth / 2 + px * scale + panX;
+      const screenY = margin.top + plotHeight / 2 - py * scale + panY; // Flip Y for screen coordinates
       
-      return { x: px, y: py, depth: nz };
+      // Calculate depth for opacity (normalized Z after rotation)
+      const depth = (pz + 1) / 2; // Normalize to 0-1
+      
+      return { x: screenX, y: screenY, depth: depth };
     }
 
     function renderPoints(canvasEl, ctxEl, xScaleEl, yScaleEl, highlightPoint = null, is3D = false) {
@@ -1552,18 +1839,21 @@
       // Clear canvas
       ctxEl.clearRect(0, 0, canvasEl.width, canvasEl.height);
       
-      // Sample data if too many points
-      const dataToRender = sampleData(filteredData, MAX_POINTS_TO_RENDER);
-      if (canvasEl.id === 'scatterplot2d' || canvasEl.id === 'scatterplot3d') {
-        window.renderedData = dataToRender; // Store for mouse interaction
-      }
-      
       // Get extents for 3D projection
       let xExtent, yExtent, zExtent;
       if (is3D) {
         xExtent = d3.extent(filteredData, d => d.x_coordinate);
         yExtent = d3.extent(filteredData, d => d.y_coordinate);
         zExtent = d3.extent(filteredData, d => d.z_coordinate);
+        
+        // Draw 3D axes before points (so axes are behind points)
+        draw3DAxes(ctxEl, xExtent, yExtent, zExtent, canvasEl.width, canvasEl.height);
+      }
+      
+      // Sample data if too many points
+      const dataToRender = sampleData(filteredData, MAX_POINTS_TO_RENDER);
+      if (canvasEl.id === 'scatterplot2d' || canvasEl.id === 'scatterplot3d') {
+        window.renderedData = dataToRender; // Store for mouse interaction
       }
       
       // Render points on canvas
