@@ -250,6 +250,102 @@
       flex: 1;
       user-select: none;
     }
+
+    /* Tab Navigation Styles */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-button {
+      padding: 8px 16px;
+      background: #f5f5f5;
+      border: none;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .tab-button:hover {
+      background: #e8e8e8;
+    }
+
+    .tab-button.active {
+      background: white;
+      color: #2c3e50;
+      border-bottom: 2px solid white;
+      margin-bottom: -2px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 10px;
+      min-height: 600px;
+    }
+
+    .dashboard-cell {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      background: white;
+      position: relative;
+      min-height: 200px;
+    }
+
+    .dashboard-cell h4 {
+      margin: 0 0 8px 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .dashboard-chart {
+      width: 100%;
+      height: calc(100% - 30px);
+    }
+
+    /* Table styles */
+    .summary-table {
+      width: 100%;
+      font-size: 10px;
+      border-collapse: collapse;
+    }
+
+    .summary-table th,
+    .summary-table td {
+      padding: 4px 6px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .summary-table th {
+      background: #f9f9f9;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .summary-table tr:hover {
+      background: #f5f5f5;
+    }
   </style>
 </head>
 <body>
@@ -326,16 +422,108 @@
       </div>
     </div>
 
-    <div class="chart-container" style="display: flex; gap: 10px; align-items: flex-start; overflow: hidden; max-width: 100%;">
-      <div style="flex: 1; min-width: 0; position: relative;">
-        <canvas id="scatterplot" style="display: block; border: 1px solid #ddd; border-radius: 4px;"></canvas>
-        <svg id="axes" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
-      </div>
-      <div id="legend" style="min-width: 180px; max-width: 220px; overflow-y: auto; overflow-x: hidden; padding: 10px; background: #f9f9f9; border-radius: 6px; border: 1px solid #ddd; display: none; flex-shrink: 0; align-self: stretch;">
-        <h3 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #333;">Gene Colors</h3>
-        <div id="legendItems"></div>
+    <!-- Tab Navigation -->
+    <div class="tabs">
+      <button class="tab-button active" onclick="switchTab(1)">2D View</button>
+      <button class="tab-button" onclick="switchTab(2)">3D View</button>
+      <button class="tab-button" onclick="switchTab(3)">Dashboard</button>
+    </div>
+
+    <!-- Tab 1: 2D View -->
+    <div id="tab1" class="tab-content active">
+      <div class="chart-container" style="display: flex; gap: 10px; align-items: flex-start; overflow: hidden; max-width: 100%;">
+        <div style="flex: 1; min-width: 0; position: relative;">
+          <canvas id="scatterplot2d" style="display: block; border: 1px solid #ddd; border-radius: 4px;"></canvas>
+          <svg id="axes2d" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+        </div>
+        <div id="legend2d" style="min-width: 180px; max-width: 220px; overflow-y: auto; overflow-x: hidden; padding: 10px; background: #f9f9f9; border-radius: 6px; border: 1px solid #ddd; display: none; flex-shrink: 0; align-self: stretch;">
+          <h3 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #333;">Gene Colors</h3>
+          <div id="legendItems2d"></div>
+        </div>
       </div>
     </div>
+
+    <!-- Tab 2: 3D View -->
+    <div id="tab2" class="tab-content">
+      <div class="chart-container" style="display: flex; gap: 10px; align-items: flex-start; overflow: hidden; max-width: 100%;">
+        <div style="flex: 1; min-width: 0; position: relative;">
+          <canvas id="scatterplot3d" style="display: block; border: 1px solid #ddd; border-radius: 4px;"></canvas>
+          <svg id="axes3d" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+        </div>
+        <div id="legend3d" style="min-width: 180px; max-width: 220px; overflow-y: auto; overflow-x: hidden; padding: 10px; background: #f9f9f9; border-radius: 6px; border: 1px solid #ddd; display: none; flex-shrink: 0; align-self: stretch;">
+          <h3 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #333;">Gene Colors</h3>
+          <div id="legendItems3d"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Dashboard -->
+    <div id="tab3" class="tab-content">
+      <div class="dashboard-grid">
+        <!-- Cell 1: 3D View -->
+        <div class="dashboard-cell">
+          <h4>3D View</h4>
+          <div style="position: relative; width: 100%; height: calc(100% - 30px);">
+            <canvas id="dashboard3d" class="dashboard-chart" style="border: 1px solid #eee; border-radius: 3px;"></canvas>
+            <svg id="dashboard3dAxes" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+          </div>
+        </div>
+        
+        <!-- Cell 2: 2D View -->
+        <div class="dashboard-cell">
+          <h4>2D View</h4>
+          <div style="position: relative; width: 100%; height: calc(100% - 30px);">
+            <canvas id="dashboard2d" class="dashboard-chart" style="border: 1px solid #eee; border-radius: 3px;"></canvas>
+            <svg id="dashboard2dAxes" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+          </div>
+        </div>
+        
+        <!-- Cell 3: Summaries Table -->
+        <div class="dashboard-cell">
+          <h4>Region Statistics</h4>
+          <div id="summaryTable" class="dashboard-chart" style="overflow-y: auto;"></div>
+        </div>
+        
+        <!-- Cell 4: Gene Expression Distribution -->
+        <div class="dashboard-cell">
+          <h4>Gene Expression Distribution</h4>
+          <svg id="geneExpressionChart" class="dashboard-chart"></svg>
+        </div>
+        
+        <!-- Cell 5: Region Comparison Heatmap -->
+        <div class="dashboard-cell">
+          <h4>Region Comparison Heatmap</h4>
+          <svg id="regionHeatmap" class="dashboard-chart"></svg>
+        </div>
+        
+        <!-- Cell 6: Z-Slice Distribution -->
+        <div class="dashboard-cell">
+          <h4>Z-Slice Distribution</h4>
+          <svg id="zSliceChart" class="dashboard-chart"></svg>
+        </div>
+        
+        <!-- Cell 7: Cell Type Distribution -->
+        <div class="dashboard-cell">
+          <h4>Cell Type Distribution</h4>
+          <svg id="cellTypeChart" class="dashboard-chart"></svg>
+        </div>
+        
+        <!-- Cell 8: Spatial Density Heatmap -->
+        <div class="dashboard-cell">
+          <h4>Spatial Density Heatmap</h4>
+          <svg id="spatialDensityChart" class="dashboard-chart"></svg>
+        </div>
+        
+        <!-- Cell 9: Empty -->
+        <div class="dashboard-cell">
+          <h4>Additional Analysis</h4>
+          <div class="dashboard-chart" style="display: flex; align-items: center; justify-content: center; color: #999; font-size: 11px;">
+            Available for future visualizations
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="loading" id="loading" style="display: none;">Loading data...</div>
   </div>
 
@@ -348,6 +536,10 @@
     let rawData = [];
     let filteredData = [];
     let canvas, ctx, axesSvg, xScale, yScale;
+    let canvas2d, ctx2d, axesSvg2d, xScale2d, yScale2d;
+    let canvas3d, ctx3d, axesSvg3d, xScale3d, yScale3d;
+    let dashboard3dCanvas, dashboard3dCtx, dashboard3dAxesSvg, dashboard3dXScale, dashboard3dYScale;
+    let dashboard2dCanvas, dashboard2dCtx, dashboard2dAxesSvg, dashboard2dXScale, dashboard2dYScale;
     let hasCellType = false;
     let colorScale = null;
     const margin = { top: 30, right: 30, bottom: 45, left: 45 };
@@ -355,6 +547,90 @@
     const MAX_POINTS_TO_RENDER = 100000; // Maximum points to render for performance
     let renderTimeout = null;
     let hoveredPoint = null;
+    let currentTab = 1;
+
+    // Tab switching function
+    function switchTab(tabNumber) {
+      currentTab = tabNumber;
+      
+      // Update tab buttons
+      document.querySelectorAll('.tab-button').forEach((btn, idx) => {
+        if (idx + 1 === tabNumber) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach((content, idx) => {
+        if (idx + 1 === tabNumber) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+      
+      // Update legend visibility
+      const legend2d = document.getElementById('legend2d');
+      const legend3d = document.getElementById('legend3d');
+      if (legend2d) legend2d.style.display = (tabNumber === 1) ? 'block' : 'none';
+      if (legend3d) legend3d.style.display = (tabNumber === 2) ? 'block' : 'none';
+      
+      // Update visualizations when switching tabs
+      if (rawData && rawData.length > 0) {
+        const xExtent = d3.extent(rawData, d => d.x_coordinate);
+        const yExtent = d3.extent(rawData, d => d.y_coordinate);
+        
+        // Re-initialize canvases if needed (in case they weren't visible during first setup)
+        // Also re-initialize to get proper dimensions when tab becomes visible
+        if (tabNumber === 1) {
+          if (!canvas2d || !xScale2d) {
+            setup2DView(xExtent, yExtent);
+          } else {
+            // Recalculate dimensions in case container size changed
+            const canvasEl = document.getElementById('scatterplot2d');
+            if (canvasEl) {
+              const container = canvasEl.parentElement;
+              const containerRect = container.getBoundingClientRect();
+              const width = containerRect.width > 0 ? containerRect.width : (container.clientWidth || 800);
+              if (canvas2d.width !== width) {
+                setup2DView(xExtent, yExtent);
+              }
+            }
+          }
+        }
+        if (tabNumber === 2) {
+          if (!canvas3d || !xScale3d) {
+            setup3DView(xExtent, yExtent);
+          } else {
+            const canvasEl = document.getElementById('scatterplot3d');
+            if (canvasEl) {
+              const container = canvasEl.parentElement;
+              const containerRect = container.getBoundingClientRect();
+              const width = containerRect.width > 0 ? containerRect.width : (container.clientWidth || 800);
+              if (canvas3d.width !== width) {
+                setup3DView(xExtent, yExtent);
+              }
+            }
+          }
+        }
+        if (tabNumber === 3) {
+          if (!dashboard3dCanvas || !dashboard3dXScale) {
+            setupDashboard(xExtent, yExtent);
+          }
+        }
+        
+        // Small delay to ensure tab is visible before rendering
+        setTimeout(() => {
+          updateVisualization();
+          // Force dashboard update when switching to tab 3
+          if (tabNumber === 3) {
+            setTimeout(() => updateDashboard(), 50);
+          }
+        }, 50);
+      }
+    }
 
     // Column name normalization function
     function normalizeColumns(data) {
@@ -445,23 +721,33 @@
       document.getElementById('stats').style.display = 'none';
       document.getElementById('cellTypeFilterGroup').style.display = 'none';
 
-      // Clear existing visualization
-      if (canvas && ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      if (axesSvg) {
-        axesSvg.selectAll('*').remove();
-      }
+      // Clear existing visualizations
+      [canvas2d, canvas3d, dashboard2dCanvas, dashboard3dCanvas].forEach(canvas => {
+        if (canvas && canvas.getContext) {
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      });
+      [axesSvg2d, axesSvg3d, dashboard2dAxesSvg, dashboard3dAxesSvg].forEach(svg => {
+        if (svg) svg.selectAll('*').remove();
+      });
 
-      // Clear legend
-      document.getElementById('legend').style.display = 'none';
-      document.getElementById('legendItems').innerHTML = '';
+      // Clear legends
+      ['legend2d', 'legend3d'].forEach(id => {
+        const legend = document.getElementById(id);
+        if (legend) legend.style.display = 'none';
+      });
+      ['legendItems2d', 'legendItems3d'].forEach(id => {
+        const items = document.getElementById(id);
+        if (items) items.innerHTML = '';
+      });
       colorScale = null;
       if (renderTimeout) {
         clearTimeout(renderTimeout);
         renderTimeout = null;
       }
-      canvasInteractivitySetup = false; // Reset so it can be set up again
+      canvasInteractivitySetup2d = false;
+      canvasInteractivitySetup3d = false;
 
       // Reset filters
       document.getElementById('regionFilter').innerHTML = '<option value="">All Regions</option>';
@@ -591,23 +877,33 @@
       document.getElementById('stats').style.display = 'none';
       document.getElementById('cellTypeFilterGroup').style.display = 'none';
 
-      // Clear existing visualization
-      if (canvas && ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      if (axesSvg) {
-        axesSvg.selectAll('*').remove();
-      }
+      // Clear existing visualizations
+      [canvas2d, canvas3d, dashboard2dCanvas, dashboard3dCanvas].forEach(canvas => {
+        if (canvas && canvas.getContext) {
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      });
+      [axesSvg2d, axesSvg3d, dashboard2dAxesSvg, dashboard3dAxesSvg].forEach(svg => {
+        if (svg) svg.selectAll('*').remove();
+      });
 
-      // Clear legend
-      document.getElementById('legend').style.display = 'none';
-      document.getElementById('legendItems').innerHTML = '';
+      // Clear legends
+      ['legend2d', 'legend3d'].forEach(id => {
+        const legend = document.getElementById(id);
+        if (legend) legend.style.display = 'none';
+      });
+      ['legendItems2d', 'legendItems3d'].forEach(id => {
+        const items = document.getElementById(id);
+        if (items) items.innerHTML = '';
+      });
       colorScale = null;
       if (renderTimeout) {
         clearTimeout(renderTimeout);
         renderTimeout = null;
       }
-      canvasInteractivitySetup = false; // Reset so it can be set up again
+      canvasInteractivitySetup2d = false;
+      canvasInteractivitySetup3d = false;
 
       // Reset filters
       document.getElementById('regionFilter').innerHTML = '<option value="">All Regions</option>';
@@ -808,64 +1104,73 @@
       // Show stats
       document.getElementById('stats').style.display = 'flex';
       
-      // Setup Canvas and SVG for axes
-      const container = document.getElementById('scatterplot').parentElement;
-      // Use getBoundingClientRect to get accurate rendered width
-      const containerRect = container.getBoundingClientRect();
-      const width = containerRect.width || container.clientWidth;
-      const height = 400;
-      
-      // Setup canvas - set both internal resolution and CSS size to match
-      canvas = document.getElementById('scatterplot');
-      canvas.width = width;
-      canvas.height = height;
-      canvas.style.width = width + 'px';
-      canvas.style.height = height + 'px';
-      ctx = canvas.getContext('2d');
-      
-      // Update legend height to match canvas
-      setTimeout(() => updateLegendHeight(), 0);
-      
-      // Clear any existing axes before creating new ones
-      if (axesSvg) {
-        axesSvg.selectAll('*').remove();
-      }
-      
-      // Setup SVG for axes (overlaid on canvas) - must match canvas exactly
-      axesSvg = d3.select('#axes')
-        .attr('width', width)
-        .attr('height', height)
-        .style('width', width + 'px')
-        .style('height', height + 'px');
-
-      // Setup scales
+      // Setup scales (shared across all visualizations)
       const xExtent = d3.extent(rawData, d => d.x_coordinate);
       const yExtent = d3.extent(rawData, d => d.y_coordinate);
       const zExtent = d3.extent(rawData, d => d.z_coordinate);
       
-      xScale = d3.scaleLinear()
-        .domain(xExtent)
-        .range([margin.left, width - margin.right]);
-
-      yScale = d3.scaleLinear()
-        .domain(yExtent)
-        .range([height - margin.bottom, margin.top]);
-
       // Update zRange slider
       const zSlider = document.getElementById('zRange');
       zSlider.max = zExtent[1];
       zSlider.value = zExtent[1];
       document.getElementById('zRangeValue').textContent = zExtent[1].toFixed(1);
 
-      // Add axes to SVG
-      axesSvg.append('g')
+      // Setup Tab 1: 2D View
+      setup2DView(xExtent, yExtent);
+      
+      // Setup Tab 2: 3D View
+      setup3DView(xExtent, yExtent);
+      
+      // Setup Tab 3: Dashboard
+      setupDashboard(xExtent, yExtent);
+
+      // Update with initial data
+      updateVisualization();
+      
+      // Create legends
+      createLegend(genes, 'legend2d', 'legendItems2d');
+      createLegend(genes, 'legend3d', 'legendItems3d');
+    }
+
+    function setup2DView(xExtent, yExtent) {
+      const canvasEl = document.getElementById('scatterplot2d');
+      if (!canvasEl) return;
+      
+      const container = canvasEl.parentElement;
+      const containerRect = container.getBoundingClientRect();
+      const width = containerRect.width > 0 ? containerRect.width : (container.clientWidth || 800);
+      const height = 400;
+      
+      canvas2d = canvasEl;
+      canvas2d.width = width;
+      canvas2d.height = height;
+      canvas2d.style.width = width + 'px';
+      canvas2d.style.height = height + 'px';
+      ctx2d = canvas2d.getContext('2d');
+      
+      axesSvg2d = d3.select('#axes2d')
+        .attr('width', width)
+        .attr('height', height)
+        .style('width', width + 'px')
+        .style('height', height + 'px');
+      
+      xScale2d = d3.scaleLinear()
+        .domain(xExtent)
+        .range([margin.left, width - margin.right]);
+
+      yScale2d = d3.scaleLinear()
+        .domain(yExtent)
+        .range([height - margin.bottom, margin.top]);
+
+      axesSvg2d.selectAll('*').remove();
+      axesSvg2d.append('g')
         .attr('class', 'x-axis')
         .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale))
+        .call(d3.axisBottom(xScale2d))
         .selectAll('text')
         .style('font-size', '10px');
 
-      axesSvg.append('text')
+      axesSvg2d.append('text')
         .attr('class', 'axis-label')
         .attr('x', width / 2)
         .attr('y', height - 10)
@@ -874,14 +1179,14 @@
         .style('font-size', '10px')
         .text('X Coordinate');
 
-      axesSvg.append('g')
+      axesSvg2d.append('g')
         .attr('class', 'y-axis')
         .attr('transform', `translate(${margin.left},0)`)
-        .call(d3.axisLeft(yScale))
+        .call(d3.axisLeft(yScale2d))
         .selectAll('text')
         .style('font-size', '10px');
 
-      axesSvg.append('text')
+      axesSvg2d.append('text')
         .attr('class', 'axis-label')
         .attr('transform', `rotate(-90)`)
         .attr('y', 15)
@@ -891,15 +1196,132 @@
         .style('font-size', '10px')
         .text('Y Coordinate');
       
-      // Setup canvas mouse events for tooltips
-      setupCanvasInteractivity();
+      // Setup canvas interactivity
+      setupCanvasInteractivity(canvas2d, xScale2d, yScale2d, true);
+    }
 
-      // Update with initial data
-      updateVisualization();
+    function setup3DView(xExtent, yExtent) {
+      const canvasEl = document.getElementById('scatterplot3d');
+      if (!canvasEl) return;
       
-      // Create legend and set dynamic height
-      createLegend(genes);
-      updateLegendHeight();
+      const container = canvasEl.parentElement;
+      const containerRect = container.getBoundingClientRect();
+      const width = containerRect.width > 0 ? containerRect.width : (container.clientWidth || 800);
+      const height = 400;
+      
+      canvas3d = canvasEl;
+      canvas3d.width = width;
+      canvas3d.height = height;
+      canvas3d.style.width = width + 'px';
+      canvas3d.style.height = height + 'px';
+      ctx3d = canvas3d.getContext('2d');
+      
+      axesSvg3d = d3.select('#axes3d')
+        .attr('width', width)
+        .attr('height', height)
+        .style('width', width + 'px')
+        .style('height', height + 'px');
+      
+      xScale3d = d3.scaleLinear()
+        .domain(xExtent)
+        .range([margin.left, width - margin.right]);
+
+      yScale3d = d3.scaleLinear()
+        .domain(yExtent)
+        .range([height - margin.bottom, margin.top]);
+
+      axesSvg3d.selectAll('*').remove();
+      axesSvg3d.append('g')
+        .attr('class', 'x-axis')
+        .attr('transform', `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale3d))
+        .selectAll('text')
+        .style('font-size', '10px');
+
+      axesSvg3d.append('text')
+        .attr('class', 'axis-label')
+        .attr('x', width / 2)
+        .attr('y', height - 10)
+        .attr('fill', '#666')
+        .style('text-anchor', 'middle')
+        .style('font-size', '10px')
+        .text('X Coordinate');
+
+      axesSvg3d.append('g')
+        .attr('class', 'y-axis')
+        .attr('transform', `translate(${margin.left},0)`)
+        .call(d3.axisLeft(yScale3d))
+        .selectAll('text')
+        .style('font-size', '10px');
+
+      axesSvg3d.append('text')
+        .attr('class', 'axis-label')
+        .attr('transform', `rotate(-90)`)
+        .attr('y', 15)
+        .attr('x', -height / 2)
+        .attr('fill', '#666')
+        .style('text-anchor', 'middle')
+        .style('font-size', '10px')
+        .text('Y Coordinate');
+      
+      // Setup canvas interactivity
+      setupCanvasInteractivity(canvas3d, xScale3d, yScale3d, false);
+    }
+
+    function setupDashboard(xExtent, yExtent) {
+      // Setup dashboard 3D view
+      const dashboard3dCell = document.getElementById('dashboard3d').parentElement;
+      const dashboard3dRect = dashboard3dCell.getBoundingClientRect();
+      const dashboard3dWidth = dashboard3dRect.width || 300;
+      const dashboard3dHeight = dashboard3dRect.height || 200;
+      
+      dashboard3dCanvas = document.getElementById('dashboard3d');
+      dashboard3dCanvas.width = dashboard3dWidth;
+      dashboard3dCanvas.height = dashboard3dHeight;
+      dashboard3dCanvas.style.width = dashboard3dWidth + 'px';
+      dashboard3dCanvas.style.height = dashboard3dHeight + 'px';
+      dashboard3dCtx = dashboard3dCanvas.getContext('2d');
+      
+      dashboard3dAxesSvg = d3.select('#dashboard3dAxes')
+        .attr('width', dashboard3dWidth)
+        .attr('height', dashboard3dHeight)
+        .style('width', dashboard3dWidth + 'px')
+        .style('height', dashboard3dHeight + 'px');
+      
+      dashboard3dXScale = d3.scaleLinear()
+        .domain(xExtent)
+        .range([margin.left, dashboard3dWidth - margin.right]);
+
+      dashboard3dYScale = d3.scaleLinear()
+        .domain(yExtent)
+        .range([dashboard3dHeight - margin.bottom, margin.top]);
+
+      // Setup dashboard 2D view
+      const dashboard2dCell = document.getElementById('dashboard2d').parentElement;
+      const dashboard2dRect = dashboard2dCell.getBoundingClientRect();
+      const dashboard2dWidth = dashboard2dRect.width || 300;
+      const dashboard2dHeight = dashboard2dRect.height || 200;
+      
+      dashboard2dCanvas = document.getElementById('dashboard2d');
+      dashboard2dCanvas.width = dashboard2dWidth;
+      dashboard2dCanvas.height = dashboard2dHeight;
+      dashboard2dCanvas.style.width = dashboard2dWidth + 'px';
+      dashboard2dCanvas.style.height = dashboard2dHeight + 'px';
+      dashboard2dCtx = dashboard2dCanvas.getContext('2d');
+      
+      dashboard2dAxesSvg = d3.select('#dashboard2dAxes')
+        .attr('width', dashboard2dWidth)
+        .attr('height', dashboard2dHeight)
+        .style('width', dashboard2dWidth + 'px')
+        .style('height', dashboard2dHeight + 'px');
+      
+      dashboard2dXScale = d3.scaleLinear()
+        .domain(xExtent)
+        .range([margin.left, dashboard2dWidth - margin.right]);
+
+      dashboard2dYScale = d3.scaleLinear()
+        .domain(yExtent)
+        .range([dashboard2dHeight - margin.bottom, margin.top]);
     }
 
     function updateLegendHeight() {
@@ -913,9 +1335,11 @@
       }
     }
 
-    function createLegend(genes) {
-      const legendContainer = document.getElementById('legend');
-      const legendItems = document.getElementById('legendItems');
+    function createLegend(genes, legendId = 'legend', legendItemsId = 'legendItems') {
+      const legendContainer = document.getElementById(legendId);
+      const legendItems = document.getElementById(legendItemsId);
+      if (!legendContainer || !legendItems) return;
+      
       legendItems.innerHTML = '';
       
       if (!colorScale || genes.length === 0) {
@@ -923,11 +1347,16 @@
         return;
       }
       
-      // Show legend
-      legendContainer.style.display = 'block';
-      
-      // Update height dynamically
-      updateLegendHeight();
+      // Show legend only if it's for the active tab
+      if (legendId === 'legend2d' && currentTab === 1) {
+        legendContainer.style.display = 'block';
+      } else if (legendId === 'legend3d' && currentTab === 2) {
+        legendContainer.style.display = 'block';
+      } else if (legendId === 'legend2d' || legendId === 'legend3d') {
+        legendContainer.style.display = 'none';
+      } else {
+        legendContainer.style.display = 'block';
+      }
       
       // Create legend items for each gene
       genes.forEach(gene => {
@@ -941,21 +1370,20 @@
         // Add click handler to toggle gene visibility
         item.addEventListener('click', function() {
           const isHidden = item.classList.contains('hidden');
-          const geneFilter = document.getElementById('geneFilter');
           
-          if (isHidden) {
-            // Show this gene
-            item.classList.remove('hidden');
-            // If gene filter is set to this gene or empty, update visualization
-            if (!geneFilter.value || geneFilter.value === gene) {
-              updateVisualization();
+          // Update all legends to keep them in sync
+          document.querySelectorAll('.legend-item').forEach(li => {
+            const label = li.querySelector('.legend-label');
+            if (label && label.textContent.trim() === gene) {
+              if (isHidden) {
+                li.classList.remove('hidden');
+              } else {
+                li.classList.add('hidden');
+              }
             }
-          } else {
-            // Hide this gene - filter it out
-            item.classList.add('hidden');
-            // Temporarily add this gene to a hidden list, or filter it in updateVisualization
-            updateVisualization();
-          }
+          });
+          
+          updateVisualization();
         });
         
         legendItems.appendChild(item);
@@ -980,14 +1408,16 @@
 
     let hoverTimeout = null;
     let lastHoveredPoint = null;
-    let canvasInteractivitySetup = false;
+    let canvasInteractivitySetup2d = false;
+    let canvasInteractivitySetup3d = false;
     
-    function setupCanvasInteractivity() {
-      if (!canvas || canvasInteractivitySetup) return;
-      canvasInteractivitySetup = true;
+    function setupCanvasInteractivity(canvasEl, xScaleEl, yScaleEl, is2d = true) {
+      if (!canvasEl || (is2d && canvasInteractivitySetup2d) || (!is2d && canvasInteractivitySetup3d)) return;
+      if (is2d) canvasInteractivitySetup2d = true;
+      else canvasInteractivitySetup3d = true;
       
-      canvas.addEventListener('mousemove', function(event) {
-        if (!filteredData || filteredData.length === 0 || !xScale || !yScale) return;
+      canvasEl.addEventListener('mousemove', function(event) {
+        if (!filteredData || filteredData.length === 0 || !xScaleEl || !yScaleEl) return;
         
         // Throttle hover detection for performance
         if (hoverTimeout) {
@@ -995,26 +1425,42 @@
         }
         
         hoverTimeout = setTimeout(() => {
-          const rect = canvas.getBoundingClientRect();
+          const rect = canvasEl.getBoundingClientRect();
           const x = event.clientX - rect.left;
           const y = event.clientY - rect.top;
           
           // Find nearest point (within reasonable distance)
           const pointSize = parseFloat(document.getElementById('pointSize').value);
           const searchRadius = pointSize * 4;
-          const searchRadiusSq = searchRadius * searchRadius; // Use squared distance to avoid sqrt
+          const searchRadiusSq = searchRadius * searchRadius;
           
           let nearestPoint = null;
           let minDistSq = searchRadiusSq;
           
-          // Search in rendered data (which may be sampled) - limit search to reasonable number
           const renderedData = window.renderedData || [];
-          const maxSearch = Math.min(renderedData.length, 50000); // Limit search for performance
+          const maxSearch = Math.min(renderedData.length, 50000);
+          
+          // Check if this is 3D view
+          const is3DView = !is2d;
+          let xExtent, yExtent, zExtent;
+          if (is3DView && filteredData && filteredData.length > 0) {
+            xExtent = d3.extent(filteredData, d => d.x_coordinate);
+            yExtent = d3.extent(filteredData, d => d.y_coordinate);
+            zExtent = d3.extent(filteredData, d => d.z_coordinate);
+          }
           
           for (let i = 0; i < maxSearch; i++) {
             const d = renderedData[i];
-            const px = xScale(d.x_coordinate);
-            const py = yScale(d.y_coordinate);
+            let px, py;
+            if (is3DView && xExtent && yExtent && zExtent) {
+              const proj = project3D(d.x_coordinate, d.y_coordinate, d.z_coordinate,
+                                    xExtent, yExtent, zExtent, canvasEl.width, canvasEl.height);
+              px = proj.x;
+              py = proj.y;
+            } else {
+              px = xScaleEl(d.x_coordinate);
+              py = yScaleEl(d.y_coordinate);
+            }
             const dx = x - px;
             const dy = y - py;
             const distSq = dx * dx + dy * dy;
@@ -1025,7 +1471,6 @@
             }
           }
           
-          // Only update if hovered point changed
           if (nearestPoint !== lastHoveredPoint) {
             lastHoveredPoint = nearestPoint;
             hoveredPoint = nearestPoint;
@@ -1046,27 +1491,21 @@
               tooltip.style.left = (event.pageX + 10) + 'px';
               tooltip.style.top = (event.pageY - 10) + 'px';
               
-              // Re-render to show highlight
-              renderPoints();
+              updateVisualization();
             } else {
               tooltip.style.display = 'none';
               hoveredPoint = null;
-              
-              // Re-render to remove highlight
-              if (lastHoveredPoint) {
-                renderPoints();
-              }
+              updateVisualization();
             }
           } else if (nearestPoint) {
-            // Update tooltip position even if point hasn't changed
             const tooltip = document.getElementById('tooltip');
             tooltip.style.left = (event.pageX + 10) + 'px';
             tooltip.style.top = (event.pageY - 10) + 'px';
           }
-        }, 50); // Throttle to ~20 checks per second
+        }, 50);
       });
       
-      canvas.addEventListener('mouseout', function() {
+      canvasEl.addEventListener('mouseout', function() {
         if (hoverTimeout) {
           clearTimeout(hoverTimeout);
           hoverTimeout = null;
@@ -1074,12 +1513,36 @@
         document.getElementById('tooltip').style.display = 'none';
         hoveredPoint = null;
         lastHoveredPoint = null;
-        renderPoints(); // Re-render to remove highlight
+        updateVisualization();
       });
     }
 
-    function renderPoints() {
-      if (!canvas || !ctx || !filteredData || filteredData.length === 0 || !colorScale || !xScale || !yScale) {
+    // 3D projection function (isometric projection)
+    function project3D(x, y, z, xExtent, yExtent, zExtent, width, height) {
+      // Normalize coordinates to 0-1 range
+      const nx = (xExtent[1] - xExtent[0]) > 0 ? (x - xExtent[0]) / (xExtent[1] - xExtent[0]) : 0.5;
+      const ny = (yExtent[1] - yExtent[0]) > 0 ? (y - yExtent[0]) / (yExtent[1] - yExtent[0]) : 0.5;
+      const nz = (zExtent[1] - zExtent[0]) > 0 ? (z - zExtent[0]) / (zExtent[1] - zExtent[0]) : 0.5;
+      
+      // Isometric projection: standard isometric view
+      // x' = (x - z) * sqrt(3) / 2, y' = y + (x + z) / 2
+      const sqrt3_2 = Math.sqrt(3) / 2; // ≈ 0.866
+      const isoX = (nx - nz) * sqrt3_2;
+      const isoY = ny + (nx + nz) * 0.5;
+      
+      // Scale to canvas with margins
+      const margin = { top: 30, right: 30, bottom: 45, left: 45 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      
+      const px = margin.left + (isoX + 0.5) * plotWidth;
+      const py = margin.top + (1 - isoY) * plotHeight;
+      
+      return { x: px, y: py, depth: nz };
+    }
+
+    function renderPoints(canvasEl, ctxEl, xScaleEl, yScaleEl, highlightPoint = null, is3D = false) {
+      if (!canvasEl || !ctxEl || !filteredData || filteredData.length === 0 || !colorScale || !xScaleEl || !yScaleEl) {
         return;
       }
 
@@ -1087,19 +1550,35 @@
       const pointSize = parseFloat(document.getElementById('pointSize').value);
 
       // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctxEl.clearRect(0, 0, canvasEl.width, canvasEl.height);
       
       // Sample data if too many points
       const dataToRender = sampleData(filteredData, MAX_POINTS_TO_RENDER);
-      window.renderedData = dataToRender; // Store for mouse interaction
+      if (canvasEl.id === 'scatterplot2d' || canvasEl.id === 'scatterplot3d') {
+        window.renderedData = dataToRender; // Store for mouse interaction
+      }
+      
+      // Get extents for 3D projection
+      let xExtent, yExtent, zExtent;
+      if (is3D) {
+        xExtent = d3.extent(filteredData, d => d.x_coordinate);
+        yExtent = d3.extent(filteredData, d => d.y_coordinate);
+        zExtent = d3.extent(filteredData, d => d.z_coordinate);
+      }
       
       // Render points on canvas
-      ctx.save();
-      ctx.globalAlpha = opacity;
+      ctxEl.save();
+      ctxEl.globalAlpha = opacity;
+      
+      // For 3D, sort by depth (Z) so far points render first
+      let sortedData = dataToRender;
+      if (is3D) {
+        sortedData = [...dataToRender].sort((a, b) => b.z_coordinate - a.z_coordinate);
+      }
       
       // Group by color for better performance
       const pointsByColor = {};
-      dataToRender.forEach(d => {
+      sortedData.forEach(d => {
         const color = colorScale(d.gene);
         if (!pointsByColor[color]) {
           pointsByColor[color] = [];
@@ -1107,46 +1586,77 @@
         pointsByColor[color].push(d);
       });
       
-      // Render each color group - use fillRect for small points (faster than arc)
+      // Render each color group
       if (pointSize <= 2) {
         // For small points, use rectangles (much faster)
         Object.keys(pointsByColor).forEach(color => {
-          ctx.fillStyle = color;
           pointsByColor[color].forEach(d => {
-            const x = xScale(d.x_coordinate) - pointSize;
-            const y = yScale(d.y_coordinate) - pointSize;
-            ctx.fillRect(x, y, pointSize * 2, pointSize * 2);
+            let x, y, pointOpacity = opacity;
+            if (is3D) {
+              const proj = project3D(d.x_coordinate, d.y_coordinate, d.z_coordinate, 
+                                    xExtent, yExtent, zExtent, canvasEl.width, canvasEl.height);
+              x = proj.x - pointSize;
+              y = proj.y - pointSize;
+              // Adjust opacity based on depth for 3D effect (farther = more transparent)
+              pointOpacity = opacity * (0.4 + 0.6 * proj.depth);
+            } else {
+              x = xScaleEl(d.x_coordinate) - pointSize;
+              y = yScaleEl(d.y_coordinate) - pointSize;
+            }
+            ctxEl.save();
+            ctxEl.globalAlpha = pointOpacity;
+            ctxEl.fillStyle = color;
+            ctxEl.fillRect(x, y, pointSize * 2, pointSize * 2);
+            ctxEl.restore();
           });
         });
       } else {
-        // For larger points, use circles
+        // For larger points, use circles - render individually to control opacity per point
         Object.keys(pointsByColor).forEach(color => {
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          
           pointsByColor[color].forEach(d => {
-            const x = xScale(d.x_coordinate);
-            const y = yScale(d.y_coordinate);
-            ctx.moveTo(x + pointSize, y);
-            ctx.arc(x, y, pointSize, 0, Math.PI * 2);
+            let x, y, pointOpacity = opacity;
+            if (is3D) {
+              const proj = project3D(d.x_coordinate, d.y_coordinate, d.z_coordinate,
+                                    xExtent, yExtent, zExtent, canvasEl.width, canvasEl.height);
+              x = proj.x;
+              y = proj.y;
+              // Adjust opacity based on depth for 3D effect (farther = more transparent)
+              pointOpacity = opacity * (0.4 + 0.6 * proj.depth);
+            } else {
+              x = xScaleEl(d.x_coordinate);
+              y = yScaleEl(d.y_coordinate);
+            }
+            ctxEl.save();
+            ctxEl.globalAlpha = pointOpacity;
+            ctxEl.fillStyle = color;
+            ctxEl.beginPath();
+            ctxEl.arc(x, y, pointSize, 0, Math.PI * 2);
+            ctxEl.fill();
+            ctxEl.restore();
           });
-          
-          ctx.fill();
         });
       }
       
       // Highlight hovered point if any
-      if (hoveredPoint) {
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = colorScale(hoveredPoint.gene);
-        ctx.beginPath();
-        const hx = xScale(hoveredPoint.x_coordinate);
-        const hy = yScale(hoveredPoint.y_coordinate);
-        ctx.arc(hx, hy, pointSize * 2, 0, Math.PI * 2);
-        ctx.fill();
+      if (highlightPoint) {
+        ctxEl.globalAlpha = 1;
+        ctxEl.fillStyle = colorScale(highlightPoint.gene);
+        ctxEl.beginPath();
+        let hx, hy;
+        if (is3D) {
+          const proj = project3D(highlightPoint.x_coordinate, highlightPoint.y_coordinate, highlightPoint.z_coordinate,
+                                xExtent, yExtent, zExtent, canvasEl.width, canvasEl.height);
+          hx = proj.x;
+          hy = proj.y;
+        } else {
+          hx = xScaleEl(highlightPoint.x_coordinate);
+          hy = yScaleEl(highlightPoint.y_coordinate);
+        }
+        ctxEl.arc(hx, hy, pointSize * 2, 0, Math.PI * 2);
+        ctxEl.fill();
       }
       
-      ctx.restore();
+      ctxEl.restore();
     }
 
     function updateVisualization() {
@@ -1196,9 +1706,381 @@
       }
       
       renderTimeout = setTimeout(() => {
-        renderPoints();
+        // Always render both 2D and 3D views (they're independent)
+        if (canvas2d && ctx2d && xScale2d && yScale2d) {
+          renderPoints(canvas2d, ctx2d, xScale2d, yScale2d, currentTab === 1 ? hoveredPoint : null, false);
+        }
+        if (canvas3d && ctx3d && xScale3d && yScale3d) {
+          renderPoints(canvas3d, ctx3d, xScale3d, yScale3d, currentTab === 2 ? hoveredPoint : null, true);
+        }
+        
+        // Always update dashboard if tab 3 is active
+        if (currentTab === 3) {
+          updateDashboard();
+        }
+        
         renderTimeout = null;
       }, 16); // ~60fps
+    }
+
+    function updateDashboard() {
+      if (!filteredData || filteredData.length === 0) return;
+      
+      // Render dashboard 3D and 2D views
+      if (dashboard3dCanvas && dashboard3dCtx && dashboard3dXScale && dashboard3dYScale) {
+        renderPoints(dashboard3dCanvas, dashboard3dCtx, dashboard3dXScale, dashboard3dYScale, null, true);
+      }
+      if (dashboard2dCanvas && dashboard2dCtx && dashboard2dXScale && dashboard2dYScale) {
+        renderPoints(dashboard2dCanvas, dashboard2dCtx, dashboard2dXScale, dashboard2dYScale, null, false);
+      }
+      
+      // Update all dashboard charts
+      updateSummaryTable();
+      updateGeneExpressionChart();
+      updateRegionHeatmap();
+      updateZSliceChart();
+      updateCellTypeChart();
+      updateSpatialDensityChart();
+    }
+
+    function updateSummaryTable() {
+      const tableContainer = document.getElementById('summaryTable');
+      if (!tableContainer || !filteredData || filteredData.length === 0) return;
+      
+      // Calculate statistics by region
+      const regionStats = {};
+      filteredData.forEach(d => {
+        if (!regionStats[d.region]) {
+          regionStats[d.region] = {
+            totalPoints: 0,
+            uniqueGenes: new Set(),
+            uniqueCells: new Set()
+          };
+        }
+        regionStats[d.region].totalPoints++;
+        regionStats[d.region].uniqueGenes.add(d.gene);
+        regionStats[d.region].uniqueCells.add(d.cell_id);
+      });
+      
+      let tableHtml = '<table class="summary-table"><thead><tr><th>Region</th><th>Points</th><th>Genes</th><th>Cells</th></tr></thead><tbody>';
+      Object.keys(regionStats).sort().forEach(region => {
+        const stats = regionStats[region];
+        tableHtml += `<tr><td>${region}</td><td>${stats.totalPoints.toLocaleString()}</td><td>${stats.uniqueGenes.size}</td><td>${stats.uniqueCells.size}</td></tr>`;
+      });
+      tableHtml += '</tbody></table>';
+      tableContainer.innerHTML = tableHtml;
+    }
+
+    function updateGeneExpressionChart() {
+      const svg = d3.select('#geneExpressionChart');
+      if (svg.empty() || !filteredData || filteredData.length === 0) return;
+      
+      svg.selectAll('*').remove();
+      
+      const width = svg.node().getBoundingClientRect().width || 300;
+      const height = svg.node().getBoundingClientRect().height || 200;
+      const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+      
+      // Count gene occurrences
+      const geneCounts = {};
+      filteredData.forEach(d => {
+        geneCounts[d.gene] = (geneCounts[d.gene] || 0) + 1;
+      });
+      
+      const data = Object.entries(geneCounts).map(([gene, count]) => ({ gene, count })).sort((a, b) => b.count - a.count).slice(0, 20);
+      
+      const xScale = d3.scaleBand()
+        .domain(data.map(d => d.gene))
+        .range([0, chartWidth])
+        .padding(0.1);
+      
+      const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.count)])
+        .range([chartHeight, 0]);
+      
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+      
+      g.append('g')
+        .attr('transform', `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(xScale))
+        .selectAll('text')
+        .attr('transform', 'rotate(-45)')
+        .style('text-anchor', 'end')
+        .style('font-size', '8px');
+      
+      g.append('g')
+        .call(d3.axisLeft(yScale))
+        .style('font-size', '8px');
+      
+      g.selectAll('.bar')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', d => xScale(d.gene))
+        .attr('width', xScale.bandwidth())
+        .attr('y', d => yScale(d.count))
+        .attr('height', d => chartHeight - yScale(d.count))
+        .attr('fill', d => colorScale(d.gene));
+    }
+
+    function updateRegionHeatmap() {
+      const svg = d3.select('#regionHeatmap');
+      if (svg.empty() || !filteredData || filteredData.length === 0) return;
+      
+      svg.selectAll('*').remove();
+      
+      const width = svg.node().getBoundingClientRect().width || 300;
+      const height = svg.node().getBoundingClientRect().height || 200;
+      const margin = { top: 40, right: 20, bottom: 40, left: 100 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+      
+      // Calculate gene expression by region
+      const regionGeneCounts = {};
+      filteredData.forEach(d => {
+        if (!regionGeneCounts[d.region]) {
+          regionGeneCounts[d.region] = {};
+        }
+        regionGeneCounts[d.region][d.gene] = (regionGeneCounts[d.region][d.gene] || 0) + 1;
+      });
+      
+      const regions = Object.keys(regionGeneCounts).sort();
+      const allGenes = [...new Set(filteredData.map(d => d.gene))].sort().slice(0, 15);
+      
+      const data = [];
+      regions.forEach(region => {
+        allGenes.forEach(gene => {
+          data.push({
+            region,
+            gene,
+            count: regionGeneCounts[region][gene] || 0
+          });
+        });
+      });
+      
+      const maxCount = d3.max(data, d => d.count);
+      const colorScaleHeat = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, maxCount]);
+      
+      const xScale = d3.scaleBand()
+        .domain(allGenes)
+        .range([0, chartWidth])
+        .padding(0.05);
+      
+      const yScale = d3.scaleBand()
+        .domain(regions)
+        .range([0, chartHeight])
+        .padding(0.05);
+      
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+      
+      g.selectAll('.cell')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'cell')
+        .attr('x', d => xScale(d.gene))
+        .attr('y', d => yScale(d.region))
+        .attr('width', xScale.bandwidth())
+        .attr('height', yScale.bandwidth())
+        .attr('fill', d => colorScaleHeat(d.count))
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 0.5);
+      
+      g.append('g')
+        .attr('transform', `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(xScale))
+        .selectAll('text')
+        .attr('transform', 'rotate(-45)')
+        .style('text-anchor', 'end')
+        .style('font-size', '7px');
+      
+      g.append('g')
+        .call(d3.axisLeft(yScale))
+        .style('font-size', '8px');
+    }
+
+    function updateZSliceChart() {
+      const svg = d3.select('#zSliceChart');
+      if (svg.empty() || !filteredData || filteredData.length === 0) return;
+      
+      svg.selectAll('*').remove();
+      
+      const width = svg.node().getBoundingClientRect().width || 300;
+      const height = svg.node().getBoundingClientRect().height || 200;
+      const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+      
+      // Count points by Z-slice (rounded)
+      const zCounts = {};
+      filteredData.forEach(d => {
+        const zSlice = Math.round(d.z_coordinate);
+        zCounts[zSlice] = (zCounts[zSlice] || 0) + 1;
+      });
+      
+      const data = Object.entries(zCounts)
+        .map(([z, count]) => ({ z: parseFloat(z), count }))
+        .sort((a, b) => a.z - b.z);
+      
+      const xScale = d3.scaleBand()
+        .domain(data.map(d => d.z))
+        .range([0, chartWidth])
+        .padding(0.1);
+      
+      const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.count)])
+        .range([chartHeight, 0]);
+      
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+      
+      g.append('g')
+        .attr('transform', `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(xScale))
+        .style('font-size', '8px');
+      
+      g.append('g')
+        .call(d3.axisLeft(yScale))
+        .style('font-size', '8px');
+      
+      g.selectAll('.bar')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', d => xScale(d.z))
+        .attr('width', xScale.bandwidth())
+        .attr('y', d => yScale(d.count))
+        .attr('height', d => chartHeight - yScale(d.count))
+        .attr('fill', '#667eea');
+    }
+
+    function updateCellTypeChart() {
+      const svg = d3.select('#cellTypeChart');
+      if (svg.empty() || !filteredData || filteredData.length === 0 || !hasCellType) {
+        svg.selectAll('*').remove();
+        svg.append('text')
+          .attr('x', '50%')
+          .attr('y', '50%')
+          .attr('text-anchor', 'middle')
+          .attr('dominant-baseline', 'middle')
+          .style('font-size', '10px')
+          .style('fill', '#999')
+          .text('Cell type data not available');
+        return;
+      }
+      
+      svg.selectAll('*').remove();
+      
+      const width = svg.node().getBoundingClientRect().width || 300;
+      const height = svg.node().getBoundingClientRect().height || 200;
+      const radius = Math.min(width, height) / 2 - 20;
+      
+      // Count cell types
+      const cellTypeCounts = {};
+      filteredData.forEach(d => {
+        if (d.cell_type) {
+          cellTypeCounts[d.cell_type] = (cellTypeCounts[d.cell_type] || 0) + 1;
+        }
+      });
+      
+      const data = Object.entries(cellTypeCounts).map(([type, count]) => ({ type, count }));
+      
+      const colorScalePie = d3.scaleOrdinal(d3.schemeCategory10);
+      const pie = d3.pie().value(d => d.count);
+      const arc = d3.arc().innerRadius(0).outerRadius(radius);
+      
+      const g = svg.append('g')
+        .attr('transform', `translate(${width/2},${height/2})`);
+      
+      const arcs = g.selectAll('.arc')
+        .data(pie(data))
+        .enter().append('g')
+        .attr('class', 'arc');
+      
+      arcs.append('path')
+        .attr('d', arc)
+        .attr('fill', (d, i) => colorScalePie(i))
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 2);
+      
+      arcs.append('text')
+        .attr('transform', d => `translate(${arc.centroid(d)})`)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '8px')
+        .text(d => d.data.count > 100 ? d.data.type.substring(0, 10) : '');
+    }
+
+    function updateSpatialDensityChart() {
+      const svg = d3.select('#spatialDensityChart');
+      if (svg.empty() || !filteredData || filteredData.length === 0) return;
+      
+      svg.selectAll('*').remove();
+      
+      const width = svg.node().getBoundingClientRect().width || 300;
+      const height = svg.node().getBoundingClientRect().height || 200;
+      const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+      
+      // Create 2D histogram
+      const xExtent = d3.extent(filteredData, d => d.x_coordinate);
+      const yExtent = d3.extent(filteredData, d => d.y_coordinate);
+      
+      const binsX = 20;
+      const binsY = 20;
+      const binWidth = (xExtent[1] - xExtent[0]) / binsX;
+      const binHeight = (yExtent[1] - yExtent[0]) / binsY;
+      
+      const bins = {};
+      filteredData.forEach(d => {
+        const xBin = Math.floor((d.x_coordinate - xExtent[0]) / binWidth);
+        const yBin = Math.floor((d.y_coordinate - yExtent[0]) / binHeight);
+        const key = `${xBin},${yBin}`;
+        bins[key] = (bins[key] || 0) + 1;
+      });
+      
+      const maxCount = d3.max(Object.values(bins));
+      const colorScaleDensity = d3.scaleSequential(d3.interpolateViridis)
+        .domain([0, maxCount]);
+      
+      const xScale = d3.scaleLinear()
+        .domain(xExtent)
+        .range([0, chartWidth]);
+      
+      const yScale = d3.scaleLinear()
+        .domain(yExtent)
+        .range([chartHeight, 0]);
+      
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+      
+      Object.entries(bins).forEach(([key, count]) => {
+        const [xBin, yBin] = key.split(',').map(Number);
+        const x = xExtent[0] + xBin * binWidth;
+        const y = yExtent[0] + yBin * binHeight;
+        
+        g.append('rect')
+          .attr('x', xScale(x))
+          .attr('y', yScale(y + binHeight))
+          .attr('width', chartWidth / binsX)
+          .attr('height', chartHeight / binsY)
+          .attr('fill', colorScaleDensity(count))
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 0.5);
+      });
+      
+      g.append('g')
+        .attr('transform', `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(xScale))
+        .style('font-size', '8px');
+      
+      g.append('g')
+        .call(d3.axisLeft(yScale))
+        .style('font-size', '8px');
     }
 
     // Initialize on page load
