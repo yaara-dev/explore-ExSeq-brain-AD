@@ -6,13 +6,20 @@ Interactive serverless HTML visualization for exploring spatial genomics data fr
 
 ### Option 1: Automatic Loading (Recommended)
 
-1. **Run the startup script:**
+1. **Generate the manifest file** (first time only):
+   ```bash
+   python3 generate_manifest.py
+   ```
+   This creates `data/csvs/manifest.json` listing all available CSV files.
+
+2. **Run the startup script:**
    - **Mac/Linux:** Double-click `start_server.sh` or run `./start_server.sh` in terminal
    - **Windows:** Double-click `start_server.bat`
+   - **Or manually:** Run `python3 -m http.server 8000` in the project directory
 
-2. **Open in browser:**
+3. **Open in browser:**
    - Go to `http://localhost:8000`
-   - The visualization will automatically load the first sample
+   - The visualization will automatically load the manifest and first sample
    - Use the dropdown to switch between samples
 
 ### Option 2: Manual File Selection
@@ -20,6 +27,8 @@ Interactive serverless HTML visualization for exploring spatial genomics data fr
 1. **Open `index.html` directly** in your browser (double-click the file)
 2. **Use the file input** to browse and select a CSV file from the `data/csvs/` folder
 3. The visualization will load automatically
+
+**Note:** When opening directly (file://), the manifest won't load due to browser security, so use the file upload option.
 
 ## Features
 
