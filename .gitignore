@@ -32,5 +32,9 @@ Thumbs.db
 # Visualization outputs (optional - comment if you want to track HTML)
 # *.html
 
-
+# Secrets and tokens
+token
+*.token
+.env
+.env.local
 
