@@ -255,7 +255,7 @@
         </select>
       </div>
       <div class="control-group" id="fileInputGroup" style="display: none;">
-        <label>Load Data</label>
+        <label>Load Data (Fallback)</label>
         <input type="file" id="fileInput" accept=".csv" onchange="handleFileSelect(event)" style="padding: 6px 0; cursor: pointer;">
       </div>
       <div class="control-group">
@@ -312,41 +312,8 @@
   <div class="tooltip" id="tooltip" style="display: none;"></div>
 
   <script>
-    // Sample configuration - list of all available samples
-    const samples = [
-      {
-        path: 'data/csvs/fem2_5x_F5_B_left_regions_genes_with_cell_types.csv',
-        name: 'fem2_5x_F5_B_left'
-      },
-      {
-        path: 'data/csvs/fem2_5x_F5_B_right_regions_genes_with_cell_types.csv',
-        name: 'fem2_5x_F5_B_right'
-      },
-      {
-        path: 'data/csvs/fem2_WT_F3_B_left_regions_genes_with_cell_types.csv',
-        name: 'fem2_WT_F3_B_left'
-      },
-      {
-        path: 'data/csvs/fem3_5x_E7_A_left_regions_genes_with_cell_types.csv',
-        name: 'fem3_5x_E7_A_left'
-      },
-      {
-        path: 'data/csvs/fem3_WTE1_B_L_regions_genes_with_cell_types.csv',
-        name: 'fem3_WTE1_B_L'
-      },
-      {
-        path: 'data/csvs/fem3_WTE1_B_R_regions_genes_with_cell_types.csv',
-        name: 'fem3_WTE1_B_R'
-      },
-      {
-        path: 'data/csvs/fem4_5x_F8_A_R_regions_genes_with_cell_types.csv',
-        name: 'fem4_5x_F8_A_R'
-      },
-      {
-        path: 'data/csvs/fem4_WT_F11_regions_genes_with_cell_types.csv',
-        name: 'fem4_WT_F11'
-      }
-    ];
+    // Sample configuration - loaded dynamically from manifest.json
+    let samples = [];
 
     let rawData = [];
     let filteredData = [];
@@ -387,9 +354,44 @@
       return normalized;
     }
 
+    // Load manifest.json to get list of available CSV files
+    async function loadManifest() {
+      try {
+        const manifestPath = 'data/csvs/manifest.json';
+        const response = await fetch(manifestPath);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load manifest: ${response.status} ${response.statusText}`);
+        }
+        
+        const manifest = await response.json();
+        samples = manifest;
+        
+        console.log(`Loaded manifest with ${samples.length} CSV files`);
+        return true;
+      } catch (error) {
+        console.error('Error loading manifest:', error);
+        samples = []; // Empty array on error
+        return false;
+      }
+    }
+
     // Initialize sample selector
     function initializeSampleSelector() {
       const selector = document.getElementById('sampleSelector');
+      // Clear existing options except the first one
+      while (selector.children.length > 1) {
+        selector.removeChild(selector.lastChild);
+      }
+      
+      if (samples.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No samples available';
+        selector.appendChild(option);
+        return;
+      }
+      
       samples.forEach((sample) => {
         const option = document.createElement('option');
         option.value = sample.path;
@@ -1054,30 +1056,48 @@
     }
 
     // Initialize on page load
-    window.addEventListener('DOMContentLoaded', function() {
-      initializeSampleSelector();
-      
+    window.addEventListener('DOMContentLoaded', async function() {
       // Check if we're on file:// protocol
       if (window.location.protocol === 'file:') {
         // Show file input as the primary method (no sample selector needed)
         document.getElementById('fileInputGroup').style.display = 'flex';
         document.getElementById('sampleSelectorGroup').style.display = 'none';
         document.getElementById('status').style.display = 'none';
+        return;
+      }
+      
+      // HTTP/HTTPS - load manifest and initialize
+      document.getElementById('status').textContent = 'Loading sample list...';
+      document.getElementById('status').className = 'status loading';
+      
+      const manifestLoaded = await loadManifest();
+      
+      if (!manifestLoaded) {
+        // Manifest failed to load - show error and fallback to file input
+        document.getElementById('status').textContent = 'Error: Could not load sample list. Please use the file upload option below.';
+        document.getElementById('status').className = 'status error';
+        document.getElementById('fileInputGroup').style.display = 'flex';
+        document.getElementById('sampleSelectorGroup').style.display = 'none';
+        return;
+      }
+      
+      // Initialize sample selector with loaded manifest
+      initializeSampleSelector();
+      
+      // Automatically load first sample if available
+      if (samples.length > 0) {
+        document.getElementById('status').textContent = 'Loading...';
+        document.getElementById('status').className = 'status loading';
+        
+        // Automatically load first sample
+        setTimeout(() => {
+          document.getElementById('sampleSelector').value = samples[0].path;
+          loadSampleFromPath(samples[0].path);
+        }, 100);
       } else {
-        // HTTP/HTTPS - automatically load first sample
-        if (samples.length > 0) {
-          document.getElementById('status').textContent = 'Loading...';
-          document.getElementById('status').className = 'status loading';
-          
-          // Automatically load first sample
-          setTimeout(() => {
-            document.getElementById('sampleSelector').value = samples[0].path;
-            loadSampleFromPath(samples[0].path);
-          }, 100);
-        } else {
-          document.getElementById('status').textContent = 'No samples configured.';
-          document.getElementById('status').className = 'status';
-        }
+        document.getElementById('status').textContent = 'No samples available. Please use the file upload option.';
+        document.getElementById('status').className = 'status error';
+        document.getElementById('fileInputGroup').style.display = 'flex';
       }
     });
   </script>
