@@ -261,19 +261,9 @@ morans_i_publication/
 
 If you use this software in your research, please cite:
 
-[Your Publication Citation]
-
-## Contact
-
-For questions, issues, or contributions, please contact:
-- [Your Name/Email]
-- [GitHub Issues: repository_url/issues]
 
 ## License
 
 This software is licensed under the BSD 3-Clause License. See LICENSE file for details.
 
-## Acknowledgments
-
-[Any acknowledgments or funding information]
 
