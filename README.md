@@ -77,7 +77,7 @@ The following information is only relevant if you want to modify or extend the v
 
 **Analysis Scripts:**
 - `analysis_scripts/` - Computational analysis pipelines
-  - `cell_typing/` - Cell type annotation pipeline (R/Seurat)
+  - `cell_typing/` - Supervised STELLAR encoder label transfer (Python)
   - `morans_i/` - Spatial autocorrelation analysis (Python)
   - `rna_velocity/` - RNA velocity analysis (Python)
   - `svg_neighborhood_analysis/` - SVG neighborhood analysis (Python)

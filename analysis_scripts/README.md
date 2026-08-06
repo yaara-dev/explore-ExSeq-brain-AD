@@ -6,7 +6,7 @@ This directory contains computational analysis pipelines for spatial transcripto
 
 The analysis scripts provide four complementary approaches to analyzing spatial gene expression patterns:
 
-1. **Cell Typing** - Automated cell type annotation using Seurat and marker gene catalogs
+1. **Cell Typing** - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation
 2. **Moran's I Spatial Autocorrelation** - Spatial pattern analysis using grid-based Moran's I statistics
 3. **RNA Velocity** - Analysis of RNA velocity and spatial cell-state transitions
 4. **SVG Neighborhood Analysis** - Post-CELINA analysis of spatially variable genes and co-clustered genes
@@ -15,16 +15,16 @@ The analysis scripts provide four complementary approaches to analyzing spatial 
 
 ### 1. Cell Typing (`cell_typing/`)
 
-**Purpose**: Automated cell type annotation from single-cell expression data using marker gene catalogs.
+**Purpose**: Transfer broad cell-type labels from an annotated spatial reference to unlabeled ExSeq tissue using a supervised STELLAR graph encoder.
 
 **Key Features**:
-- Seurat-based clustering and dimensionality reduction
-- Marker catalog-driven cell type assignment
-- Quality control visualizations (PCA, UMAP, support histograms)
-- Handles multiple cell types simultaneously
+- Supervised training of the STELLAR encoder on reference labels
+- KNN/radius spatial graph construction
+- Gene alignment between reference and target
+- Diagnostic spatial plots and prediction summaries
 
-**Language**: R  
-**Main Script**: `code/celltyping.R`  
+**Language**: Python  
+**Main Script**: `run_label_transfer.py`  
 **Documentation**: See [cell_typing/README.md](cell_typing/README.md)
 
 ---
@@ -98,19 +98,20 @@ Most Python-based analyses require:
 - Common scientific Python packages (pandas, numpy, scipy, matplotlib, seaborn)
 - See individual `requirements.txt` files for specific dependencies
 
-The R-based cell typing analysis requires:
-- R (with Seurat package)
+The cell typing analysis requires:
+- Python with the packages listed in `cell_typing/environment.yml`
 
 ## Directory Structure
 
 ```
 analysis_scripts/
 ├── README.md                    # This file
-├── cell_typing/                 # Cell type annotation pipeline
+├── cell_typing/                 # Supervised STELLAR label transfer
 │   ├── README.md
-│   ├── code/
-│   ├── input_example/
-│   └── output/
+│   ├── run_label_transfer.py
+│   ├── stellar_transfer/
+│   ├── examples/
+│   └── outputs/
 ├── morans_i/                    # Spatial autocorrelation analysis
 │   ├── README.md
 │   ├── src/

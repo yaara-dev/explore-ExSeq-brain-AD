@@ -1,0 +1,5 @@
+region_name,Astro-Epen,Excitatory_Neuron,GABA_Neuron,Immune,OPC-Oligo,Vascular
+CA1,0,6,6,0,0,0
+DG,0,0,0,6,6,0
+SLM,6,0,0,0,0,0
+SO,0,0,0,0,0,6
