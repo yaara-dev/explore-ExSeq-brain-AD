@@ -1,3 +1,4 @@
 data/csvs/WTE1_B_L_UPDATED_with_regions_celltypes.csv !text !filter !merge !diff
 data/csvs/fem2_5x_F5_B_left_with_regions_celltypes.csv !text !filter !merge !diff
 data/csvs/fem4_5x_F8_A_R_with_regions_celltypes.csv !text !filter !merge !dif
+data/all_samples/5xFAD_6.2_points.csv filter=lfs diff=lfs merge=lfs -text

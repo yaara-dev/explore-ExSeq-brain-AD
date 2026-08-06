@@ -16,6 +16,22 @@
     "name": "5xFAD_3"
   },
   {
+    "path": "data/all_samples/5xFAD_4_points.csv",
+    "name": "5xFAD_4"
+  },
+  {
+    "path": "data/all_samples/5xFAD_5_points.csv",
+    "name": "5xFAD_5"
+  },
+  {
+    "path": "data/all_samples/5xFAD_6.1_points.csv",
+    "name": "5xFAD_6.1"
+  },
+  {
+    "path": "data/all_samples/5xFAD_6.2_points.csv",
+    "name": "5xFAD_6.2"
+  },
+  {
     "path": "data/all_samples/WT_1_points.csv",
     "name": "WT_1"
   },
@@ -30,5 +46,21 @@
   {
     "path": "data/all_samples/WT_3_points.csv",
     "name": "WT_3"
+  },
+  {
+    "path": "data/all_samples/WT_4_points.csv",
+    "name": "WT_4"
+  },
+  {
+    "path": "data/all_samples/WT_5_points.csv",
+    "name": "WT_5"
+  },
+  {
+    "path": "data/all_samples/WT_6.1_points.csv",
+    "name": "WT_6.1"
+  },
+  {
+    "path": "data/all_samples/WT_6.2_points.csv",
+    "name": "WT_6.2"
   }
 ]

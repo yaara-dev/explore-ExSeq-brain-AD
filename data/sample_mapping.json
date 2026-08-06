@@ -1,0 +1,102 @@
+{
+  "regions_genes_dir": "/Users/yaarakarasik/data/region_genes",
+  "cell_types_dir": "/Users/yaarakarasik/data/cell_types_stellar",
+  "samples": {
+    "fem2_WT_F3_B_left": {
+      "published_name": "WT_1",
+      "existing_in_repo": true,
+      "regions_genes": "fem2_WT_F3_B_left_regions_genes.csv",
+      "cell_types": "fem2_WT_F3_B_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "WTE1_B_L_UPDATED": {
+      "published_name": "WT_2.1",
+      "existing_in_repo": true,
+      "regions_genes": "WTE1_B_L_UPDATED_regions_genes.csv",
+      "cell_types": "fem3_WTE1_B_L_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem3_WTE1_B_R": {
+      "published_name": "WT_2.2",
+      "existing_in_repo": true,
+      "regions_genes": "fem3_WTE1_B_R_regions_genes.csv",
+      "cell_types": "fem3_WTE1_B_R_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem4_WT_F11": {
+      "published_name": "WT_3",
+      "existing_in_repo": true,
+      "regions_genes": "fem4_WT_F11_regions_genes.csv",
+      "cell_types": "fem4_WT_F11_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem2_5x_F5_B_left": {
+      "published_name": "5xFAD_1.1",
+      "existing_in_repo": true,
+      "regions_genes": "fem2_5x_F5_B_left_regions_genes.csv",
+      "cell_types": "fem2_5x_F5_B_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem2_5x_F5_B_right": {
+      "published_name": "5xFAD_1.2",
+      "existing_in_repo": true,
+      "regions_genes": "fem2_5x_F5_B_right_regions_genes.csv",
+      "cell_types": "fem2_5x_F5_B_right_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem3_5x_E7_A_left": {
+      "published_name": "5xFAD_2",
+      "existing_in_repo": true,
+      "regions_genes": "fem3_5x_E7_A_left_regions_genes.csv",
+      "cell_types": "fem3_5x_E7_A_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem4_5x_F8_A_R": {
+      "published_name": "5xFAD_3",
+      "existing_in_repo": true,
+      "regions_genes": "fem4_5x_F8_A_R_regions_genes.csv",
+      "cell_types": "fem4_5x_F8_A_R_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem5_WT_left": {
+      "published_name": "WT_4",
+      "existing_in_repo": false,
+      "regions_genes": "fem5_WT_left_regions_genes.csv",
+      "cell_types": "fem5_WT_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem5_5x_left": {
+      "published_name": "5xFAD_4",
+      "existing_in_repo": false,
+      "regions_genes": "fem5_5x_left_regions_genes.csv",
+      "cell_types": "fem5_5x_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem6_WT_11C9_left": {
+      "published_name": "WT_5",
+      "existing_in_repo": false,
+      "regions_genes": "fem6_WT_11C9_left_regions_genes.csv",
+      "cell_types": "fem6_WT_11C9_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem6_5x_13C6_right": {
+      "published_name": "5xFAD_5",
+      "existing_in_repo": false,
+      "regions_genes": "fem6_5x_13C6_right__regions_genes.csv",
+      "cell_types": "fem6_5x_13C6_right_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem7_WT_12C8_left": {
+      "published_name": "WT_6.1",
+      "existing_in_repo": false,
+      "regions_genes": "fem7_WT_12C8_left_regions_genes.csv",
+      "cell_types": "fem7_WT_12C8_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem7_WT_12C8_right": {
+      "published_name": "WT_6.2",
+      "existing_in_repo": false,
+      "regions_genes": "fem7_WT_12C8_right_regions_genes.csv",
+      "cell_types": "fem7_WT_12C8_right_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem7_5x_14C7_left": {
+      "published_name": "5xFAD_6.1",
+      "existing_in_repo": false,
+      "regions_genes": "fem7_5x_14C7_left_regions_genes.csv",
+      "cell_types": "fem7_5x_14C7_left_V5_cell_id_predicted_cell_type.csv"
+    },
+    "fem7_5x_14C7_right": {
+      "published_name": "5xFAD_6.2",
+      "existing_in_repo": false,
+      "regions_genes": "fem7_5x_14C7_right_regions_genes.csv",
+      "cell_types": "fem7_5x_14C7_right_V5_cell_id_predicted_cell_type.csv"
+    }
+  }
+}
