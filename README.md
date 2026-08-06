@@ -43,8 +43,8 @@ All samples use normalized CSV format with 5 files per sample located in `data/a
 
 This repository includes four computational analysis pipelines for spatial transcriptomics data:
 
-1. **Cell Typing** - Automated cell type annotation using Seurat and marker gene catalogs
-2. **Moran's I Spatial Autocorrelation** - Spatial pattern analysis using grid-based Moran's I statistics
+1. **Cell Typing** - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation
+2. **Expression, Spatial Distribution & Moran's I** - MATLAB scripts for differential expression, localization/spatial distribution, and Moran’s I
 3. **RNA Velocity** - Analysis of RNA velocity and spatial cell-state transitions
 4. **SVG Neighborhood Analysis** - Post-CELINA analysis of spatially variable genes and co-regulated modules
 
@@ -78,7 +78,7 @@ The following information is only relevant if you want to modify or extend the v
 **Analysis Scripts:**
 - `analysis_scripts/` - Computational analysis pipelines
   - `cell_typing/` - Supervised STELLAR encoder label transfer (Python)
-  - `morans_i/` - Spatial autocorrelation analysis (Python)
+  - `expression_spatial_distribution_morans_i/` - Expression, spatial distribution/localization, and Moran’s I (MATLAB)
   - `rna_velocity/` - RNA velocity analysis (Python)
   - `svg_neighborhood_analysis/` - SVG neighborhood analysis (Python)
 
