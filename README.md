@@ -129,4 +129,5 @@ The project uses GitHub Actions for automatic deployment. The workflow (`.github
 **For Analysis Scripts:**
 - See individual analysis README files in `analysis_scripts/` for specific requirements
 - Most Python analyses require Python 3.8+ with scientific packages (pandas, numpy, scipy, etc.)
-- Cell typing analysis requires R with Seurat package
+- Cell typing (`cell_typing/`) requires Python packages listed in `analysis_scripts/cell_typing/environment.yml`
+- Expression / spatial distribution / Moran’s I (`expression_spatial_distribution_morans_i/`) requires MATLAB (see that folder’s README for toolboxes)
