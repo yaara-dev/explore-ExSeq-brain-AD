@@ -1,0 +1,62 @@
+{
+  "device": "cpu",
+  "epochs": 20,
+  "graph_mode": "knn",
+  "knn_k": 3,
+  "learning_rate": 0.001,
+  "make_undirected": true,
+  "method": "supervised_STELLAR_encoder",
+  "method_note": "The published STELLAR GraphSAGE encoder was trained using cross-entropy on reference labels only. The original open-world/semi-supervised STELLAR objective and novel-class discovery procedure were not used.",
+  "partition_parts": 1,
+  "radius": null,
+  "reference_cells": 72,
+  "reference_graph": {
+    "isolate_fraction": 0.0,
+    "isolates": 0,
+    "max_incident_degree": 14,
+    "mean_incident_degree": 7.777777777777778,
+    "median_incident_degree": 7.0,
+    "num_directed_edges": 280,
+    "num_nodes": 72
+  },
+  "reference_label_counts": {
+    "Astro-Epen": 12,
+    "Excitatory_Neuron": 12,
+    "GABA_Neuron": 12,
+    "Immune": 12,
+    "OPC-Oligo": 12,
+    "Vascular": 12
+  },
+  "reference_training_accuracy_sanity_check": 1.0,
+  "seed": 1,
+  "shared_genes": 12,
+  "target_cells": 36,
+  "target_graph": {
+    "isolate_fraction": 0.0,
+    "isolates": 0,
+    "max_incident_degree": 10,
+    "mean_incident_degree": 7.444444444444445,
+    "median_incident_degree": 6.0,
+    "num_directed_edges": 134,
+    "num_nodes": 36
+  },
+  "target_prediction_counts": {
+    "Astro-Epen": 6,
+    "Excitatory_Neuron": 6,
+    "GABA_Neuron": 6,
+    "Immune": 6,
+    "OPC-Oligo": 6,
+    "Vascular": 6
+  },
+  "target_sum": 10000.0,
+  "versions": {
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "python": "3.10.20",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.15.0",
+    "torch": "2.11.0+cpu",
+    "torch-geometric": "2.7.0"
+  },
+  "weight_decay": 0.0
+}

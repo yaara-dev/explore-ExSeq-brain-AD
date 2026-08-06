@@ -1,0 +1,66 @@
+paths:
+  # Clone https://github.com/snap-stanford/stellar into this location.
+  stellar_repo: /home/beast/storage/Hadar/STELLAR
+  reference_csv: toy_reference.csv
+  target_count_csv: toy_target_counts.csv
+  target_points_csv: toy_target_points.csv
+  output_dir: ../outputs/toy_run
+
+reference:
+  label_column: auto_label_v5
+  confidence_column: auto_confidence_v5
+  keep_confidence: [high, medium]
+  min_total_counts: 1
+  min_cells_per_label: 3
+  balance: false
+  max_cells_per_label: 250
+  exclude_labels: [Unresolved, unknown, Unknown, nan, None]
+  gene_columns:
+    [Slc17a7, Snap25, Gad1, Gad2, Gfap, Aqp4, C1qa, Tyrobp, Kdr, Pecam1, Mbp, Olig1]
+  non_gene_columns: []
+  label_map:
+    CA_Glut: Excitatory_Neuron
+    GABA_Neuron: GABA_Neuron
+    Astro-Epen: Astro-Epen
+    Immune: Immune
+    Vascular: Vascular
+    OPC-Oligo: OPC-Oligo
+
+target:
+  min_total_counts: 1
+  remove_background_cell_zero: true
+
+graph:
+  mode: knn
+  k: 3
+  radius: 80
+  make_undirected: true
+  partition_parts: 1
+
+training:
+  seed: 1
+  target_sum: 10000
+  epochs: 20
+  learning_rate: 0.001
+  weight_decay: 0.0
+
+plots:
+  enabled: true
+  invert_y: false
+  point_size: 14
+  dpi: 150
+  polygon_z_half_width: 2
+  split_excitatory_by_region: true
+  excitatory_label: Excitatory_Neuron
+  ca_plot_label: CA_GLUT
+  dg_plot_label: DG_GLUT
+  ca_like_regions: [CA1, CA3, upper_CA1, SO]
+  colors:
+    CA_GLUT: "#FF1493"
+    DG_GLUT: "#00D5FF"
+    Excitatory_Neuron: "#00D5FF"
+    GABA_Neuron: "#D95CE5"
+    OPC-Oligo: "#0B1B8C"
+    Astro-Epen: "#684E25"
+    Immune: "#8C5A3C"
+    Vascular: "#9E9E9E"
