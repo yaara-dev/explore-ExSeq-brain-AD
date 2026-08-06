@@ -70,12 +70,12 @@ The analysis scripts provide four complementary approaches to analyzing spatial 
 **Key Features**:
 - FDR correction on CELINA p-values (multiple strategies)
 - Cell-type-specific expression matrix creation
+- Condition-specific consistent CELINA significance (WT vs 5xFAD)
 - Gene clustering to identify co-regulated modules
 - K-means and hierarchical clustering methods
-- Comprehensive visualizations and statistics
 
 **Language**: Python  
-**Main Scripts**: `scripts/apply_fdr_correction.py`, `scripts/create_celltype_matrices.py`, `scripts/cluster_significant_genes.py`  
+**Main Scripts**: `scripts/apply_fdr_correction.py`, `scripts/create_celltype_matrices.py`, `scripts/analyze_condition_specific_significance.py`, `scripts/cluster_significant_genes.py`  
 **Documentation**: See [svg_neighborhood_analysis/README.md](svg_neighborhood_analysis/README.md)
 
 ---

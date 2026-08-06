@@ -6,18 +6,20 @@ This toolkit provides a computational pipeline for post-CELINA analysis of spati
 
 ## Method Description
 
-The analysis pipeline processes CELINA (spatial gene expression analysis) results to identify and cluster spatially variable genes (SVGs) that show significant spatial patterns. The pipeline consists of three main steps:
+The analysis pipeline processes CELINA (spatial gene expression analysis) results to identify and cluster spatially variable genes (SVGs) that show significant spatial patterns. The pipeline consists of four main steps:
 
 1. **FDR Correction**: Applies multiple testing correction to CELINA p-values
 2. **Cell-type Matrix Creation**: Generates cell-type-specific gene expression matrices
-3. **Gene Clustering**: Clusters significant genes to identify co-regulated modules
+3. **Condition-Specific Significance**: Finds genes that are reproducibly CELINA-significant in WT or 5xFAD (but not both)
+4. **Gene Clustering**: Clusters significant genes to identify co-regulated modules
 
 ### Key Features
 
 - **FDR Correction**: Multiple correction strategies (per-cell-type, global, per-sample)
 - **Cell-type Analysis**: Separates expression patterns by cell type
+- **Condition-Specific Calls**: Cross-replicate consistency of CELINA significance by genotype (WT-exclusive vs 5xFAD-exclusive)
 - **Gene Clustering**: Identifies co-regulated gene modules using k-means or hierarchical clustering
-- **Comprehensive Output**: Generates cluster assignments, statistics, and visualizations
+- **Summary Tables**: Cluster assignments, statistics, and condition-specific gene lists
 
 ## Installation
 
@@ -57,7 +59,7 @@ This pipeline requires **CELINA** (an R package) to be run first. CELINA analyze
 
 ## Complete Analysis Workflow
 
-The post-CELINA analysis pipeline consists of three main steps:
+The post-CELINA analysis pipeline consists of four main steps:
 
 ### Step 1: Apply FDR Correction
 
@@ -85,7 +87,22 @@ python scripts/create_celltype_matrices.py \
 
 This creates separate matrices for each cell type in `celltype_matrices/<sample_name>/gene_cell_matrix_<cell_type>.csv`.
 
-### Step 3: Cluster Significant Genes
+### Step 3: Condition-Specific Consistent Significance
+
+After FDR correction across samples, identify genes that are consistently CELINA-significant in one genotype (WT or 5xFAD) across replicates for a cell type, but not consistently significant in the other:
+
+```bash
+python scripts/analyze_condition_specific_significance.py \
+    --input-dir <directory_of_sample_folders> \
+    --pvalues-file all_p_values_FDR_global_bonferroni.csv \
+    --alpha 0.01 \
+    --min-replicates 3 \
+    --output-dir <output_directory>/condition_specific_significance
+```
+
+This writes per-(gene, cell_type) classifications (`WT_exclusive`, `5xFAD_exclusive`, `both_consistent`, `neither_consistent`), summary tables, a markdown report, and a counts plot.
+
+### Step 4: Cluster Significant Genes
 
 Cluster significant genes to identify co-regulated modules:
 
@@ -98,7 +115,7 @@ python scripts/cluster_significant_genes.py \
     --max-clusters 10
 ```
 
-This generates cluster assignments, statistics, and visualizations for each cell type.
+This generates cluster assignments, statistics, and diagnostic plots (elbow/silhouette curves, cluster heatmap, PCA) for each cell type.
 
 ## Usage
 
@@ -131,6 +148,27 @@ python scripts/create_celltype_matrices.py \
 **Arguments**:
 - `--input-dir` (required): Directory containing sample folders with `gene_cell_matrix.csv` and `RNA_with_cells.csv`
 - `--output-dir` (required): Output directory for cell-type matrices
+
+### Condition-Specific Consistent Significance
+
+```bash
+python scripts/analyze_condition_specific_significance.py \
+    --input-dir <directory_of_sample_folders> \
+    --pvalues-file all_p_values_FDR_global_bonferroni.csv \
+    --alpha 0.01 \
+    --min-replicates 3 \
+    --output-dir <output_directory>/condition_specific_significance
+```
+
+**Arguments**:
+- `--input-dir`: Directory containing per-sample folders with adjusted p-value CSVs (default: `data/stellar`)
+- `--pvalues-file`: Adjusted p-value filename inside each sample folder (default: `all_p_values_FDR_global_bonferroni.csv`)
+- `--alpha`: Significance threshold on adjusted p-values (default: `0.01`)
+- `--min-replicates`: Minimum applicable samples per genotype for a consistency call (default: `3`)
+- `--allow-partial-replicates`: If set, require significance in at least `--min-replicates` samples instead of all applicable samples
+- `--output-dir`: Output directory for tables, report, and plots
+
+A gene is called consistently significant in a genotype/cell type when it passes `--alpha` in **all** applicable samples of that genotype (and there are at least `--min-replicates` applicable samples), unless `--allow-partial-replicates` is used.
 
 ### Cluster Significant Genes
 
@@ -168,7 +206,16 @@ python scripts/apply_fdr_correction.py \
 # Note: This step requires RNA_with_cells.csv which is not included in example_data
 # For full workflow, ensure your sample directory contains this file
 
-# Step 3: Cluster Significant Genes
+# Step 3: Condition-Specific Consistent Significance
+# (requires FDR-corrected p-values across multiple WT and 5xFAD sample folders)
+python scripts/analyze_condition_specific_significance.py \
+    --input-dir <directory_of_sample_folders> \
+    --pvalues-file all_p_values_FDR_global_bonferroni.csv \
+    --alpha 0.01 \
+    --min-replicates 3 \
+    --output-dir example_output/condition_specific_significance
+
+# Step 4: Cluster Significant Genes
 python scripts/cluster_significant_genes.py \
     --input-dir example_data \
     --output-dir example_output/clustering_results \
@@ -215,6 +262,15 @@ APP,2,0,0,0
 
 - `celltype_matrices/<sample_name>/gene_cell_matrix_<cell_type>.csv`: Expression matrix for each cell type
 
+### Condition-Specific Significance Output
+
+- `condition_specific_significant_genes.csv`: Per-(gene, cell_type) consistency classification with replicate counts
+- `condition_specific_significance_summary.csv`: Counts of exclusive/shared calls by cell type
+- `WT_exclusive_genes_by_celltype.csv`: Pivot of WT-exclusive genes by cell type
+- `5xFAD_exclusive_genes_by_celltype.csv`: Pivot of 5xFAD-exclusive genes by cell type
+- `CONDITION_SPECIFIC_CELINA_SIGNIFICANCE.md`: Markdown report
+- `plots/counts_by_celltype.png`: Bar plot of exclusive/shared counts by cell type
+
 ### Clustering Output
 
 For each sample-cell type combination:
@@ -240,6 +296,7 @@ svg_neighborhood_analysis/
 ├── scripts/                     # Analysis scripts
 │   ├── apply_fdr_correction.py  # FDR correction utility
 │   ├── create_celltype_matrices.py  # Cell-type matrix creation
+│   ├── analyze_condition_specific_significance.py  # WT vs 5xFAD consistent CELINA calls
 │   └── cluster_significant_genes.py  # Gene clustering analysis
 │
 ├── example_data/                # Example input data
