@@ -154,19 +154,19 @@ cell_id,cell
 |--------|------|-------------|---------|
 | `point_id` | Integer | Foreign key to `*_points.csv` | `1`, `2`, `3` |
 | `cell_id` | Integer | Foreign key to `*_cells.csv` | `1`, `2`, `3` |
-| `cell_type` | String | Annotated cell type for this point-cell assignment | `endothelial`, `activated microglia`, `astrocytes`, `unassigned` |
+| `cell_type` | String | Annotated cell type for this point-cell assignment | `Excitatory_Neuron`, `Astro-Epen`, `Immune`, `unassigned` |
 
 **Notes**:
-- `cell_type` provides the cell type annotation (e.g., `endothelial`, `activated microglia`, `astrocytes`, `excitatory neurons`, `inhibitory neurons`, `microglia`, `oligodendrocytes`, `unassigned`)
+- `cell_type` provides the cell type annotation from supervised STELLAR label transfer (see Common Cell Types below)
 - Every point should have exactly one cell assignment
 
 **Example rows**:
 ```csv
 point_id,cell_id,cell_type
-1,1,endothelial
-2,2,unassigned
-3,2,unassigned
-4,2,unassigned
+1,1,Astro-Epen
+2,2,Excitatory_Neuron
+3,2,Excitatory_Neuron
+4,3,Immune
 ```
 
 **To join with points and cells**:
@@ -276,15 +276,17 @@ data = points.merge(
 
 ## Common Cell Types
 
-The `cell_type` column in `*_points_cells.csv` typically includes:
-- `endothelial`
-- `activated microglia`
-- `astrocytes`
-- `excitatory neurons`
-- `inhibitory neurons`
-- `microglia`
-- `oligodendrocytes`
-- `unassigned`
+The `cell_type` column in `*_points_cells.csv` uses broad labels from supervised STELLAR transfer. Types present across the published samples:
+
+| Cell type | Notes |
+|-----------|--------|
+| `Astro-Epen` | Astrocytes / ependymal |
+| `Excitatory_Neuron` | Excitatory neurons |
+| `GABA_Neuron` | Inhibitory / GABAergic neurons |
+| `Immune` | Immune cells (e.g. microglia-related) |
+| `OPC-Oligo` | Oligodendrocyte lineage |
+| `Vascular` | Vascular cells (present in 15/16 samples; absent in `WT_2.2`) |
+| `unassigned` | Points/cells without a transferred label |
 
 ---
 
@@ -297,7 +299,13 @@ All sample data files are located in `data/all_samples/`. Each sample has 5 file
 - `{SAMPLE_NAME}_cells.csv`
 - `{SAMPLE_NAME}_points_cells.csv`
 
-Available samples:
-- `WT_1`, `WT_2.1`, `WT_2.2`, `WT_3`
-- `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`
+Available samples (16 total):
+
+**WT**
+- `WT_1`, `WT_2.1`, `WT_2.2`, `WT_3`, `WT_4`, `WT_5`, `WT_6.1`, `WT_6.2`
+
+**5xFAD**
+- `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`, `5xFAD_4`, `5xFAD_5`, `5xFAD_6.1`, `5xFAD_6.2`
+
+The explorer sample list is also recorded in `data/csvs/manifest.json`. Internal lab IDs and file mappings (for regenerating normalized CSVs) are in `data/sample_mapping.json`.
 
