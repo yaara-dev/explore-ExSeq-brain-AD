@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'index.html'
-      - 'data/new_samples/**'
+      - 'data/all_samples/**'
       - 'data_explorer_scripts/generate_manifest.py'
   workflow_dispatch:
 
