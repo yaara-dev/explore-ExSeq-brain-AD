@@ -7,7 +7,7 @@ This directory contains computational analysis pipelines for spatial transcripto
 The analysis scripts provide four complementary approaches to analyzing spatial gene expression patterns:
 
 1. **Cell Typing** - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation
-2. **Moran's I Spatial Autocorrelation** - Spatial pattern analysis using grid-based Moran's I statistics
+2. **Expression, Spatial Distribution & Moran's I** - MATLAB scripts for differential expression, localization/spatial distribution, and Moran’s I
 3. **RNA Velocity** - Analysis of RNA velocity and spatial cell-state transitions
 4. **SVG Neighborhood Analysis** - Post-CELINA analysis of spatially variable genes and co-clustered genes
 
@@ -29,20 +29,19 @@ The analysis scripts provide four complementary approaches to analyzing spatial 
 
 ---
 
-### 2. Moran's I Spatial Autocorrelation (`morans_i/`)
+### 2. Expression, Spatial Distribution & Moran's I (`expression_spatial_distribution_morans_i/`)
 
-**Purpose**: Quantify spatial clustering and dispersion patterns of gene expression using spatial autocorrelation statistics.
+**Purpose**: Compare WT vs 5xFAD spatial transcriptomics (ExSeq and Xenium) for differential expression by region, Moran’s I spatial autocorrelation, and ExSeq spatial distribution/localization on a registered hippocampus map.
 
 **Key Features**:
-- FOV-specific analysis with 3D grid-based approach
-- Binary_6 weight scheme for 3D spatial adjacency
-- Per-FOV and combined regional results
-- Statistical comparison between experimental groups
-- Quantile normalization and FDR correction
+- Region-wise differential expression between groups
+- Moran’s I spatial autocorrelation comparisons
+- ExSeq spatial distribution along a hippocampus reference map
+- Separate ExSeq and Xenium entry-point scripts
 
-**Language**: Python  
-**Main Scripts**: `src/pipelines/fov_grid_morans.py`, `notebooks/analysis_pipeline.py`  
-**Documentation**: See [morans_i/README.md](morans_i/README.md)
+**Language**: MATLAB  
+**Main Scripts**: `CompareExpressionBetweenGroups_*.m`, `CompareMoranBetweenGroups_*.m`, `ExSeqSpatialDistributionXY.m`  
+**Documentation**: See [expression_spatial_distribution_morans_i/README.md](expression_spatial_distribution_morans_i/README.md)
 
 ---
 
@@ -101,6 +100,9 @@ Most Python-based analyses require:
 The cell typing analysis requires:
 - Python with the packages listed in `cell_typing/environment.yml`
 
+Expression / spatial distribution / Moran’s I analysis requires:
+- MATLAB (R2020b or later recommended; see folder README for toolboxes)
+
 ## Directory Structure
 
 ```
@@ -112,13 +114,13 @@ analysis_scripts/
 │   ├── stellar_transfer/
 │   ├── examples/
 │   └── outputs/
-├── morans_i/                    # Spatial autocorrelation analysis
+├── expression_spatial_distribution_morans_i/  # Expression, localization & Moran’s I
 │   ├── README.md
-│   ├── src/
-│   ├── notebooks/
-│   ├── scripts/
-│   ├── example_data/
-│   └── example_output/
+│   ├── CompareExpressionBetweenGroups_*.m
+│   ├── CompareMoranBetweenGroups_*.m
+│   ├── ExSeqSpatialDistributionXY.m
+│   ├── data/
+│   └── results/
 ├── rna_velocity/                # RNA velocity analysis
 │   ├── README.md
 │   ├── src/

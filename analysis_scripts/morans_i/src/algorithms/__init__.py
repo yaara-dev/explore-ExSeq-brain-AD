@@ -1,4 +1,0 @@
-"""
-Moran's I algorithms
-"""
-
