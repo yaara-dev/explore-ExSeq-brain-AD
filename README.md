@@ -8,7 +8,7 @@ This repository contains both an interactive web-based data explorer and computa
 
 **The full interactive data explorer is available via GitHub Pages:**
 
-👉 **[https://yaara-dev.github.io/explore-ExSeq-brain-AD/](https://yaara-dev.github.io/explore-ExSeq-brain-AD/)**
+👉 **[https://yaara-dev.github.io/early-AD-data-code/](https://yaara-dev.github.io/early-AD-data-code/)**
 
 Click the link above to explore the spatial genomics data with interactive 2D and 3D visualizations, filtering options, and comprehensive dashboards.
 
@@ -26,14 +26,9 @@ Click the link above to explore the spatial genomics data with interactive 2D an
 
 ### Samples Available
 
-- WT_1
-- WT_2.1
-- WT_2.2
-- WT_3
-- 5xFAD_1.1
-- 5xFAD_1.2
-- 5xFAD_2
-- 5xFAD_3
+**WT:** `WT_1`, `WT_2.1`, `WT_2.2`, `WT_3`, `WT_4`, `WT_5`, `WT_6.1`, `WT_6.2`
+
+**5xFAD:** `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`, `5xFAD_4`, `5xFAD_5`, `5xFAD_6.1`, `5xFAD_6.2`
 
 All samples use normalized CSV format with 5 files per sample located in `data/all_samples/`.
 
