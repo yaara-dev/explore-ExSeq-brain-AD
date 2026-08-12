@@ -58,7 +58,7 @@ echo ""
 
 # Step 5: Count CSV files
 echo "Step 5: Checking CSV files..."
-CSV_COUNT=$(find data/all_samples -name "*_points.csv" | wc -l | tr -d ' ')
+CSV_COUNT=$(find data/viewer_normalized -name "*_points.csv" | wc -l | tr -d ' ')
 echo "Found $CSV_COUNT sample files (*_points.csv)"
 if [ "$CSV_COUNT" -lt 1 ]; then
     echo "⚠️  WARNING: No CSV files found"

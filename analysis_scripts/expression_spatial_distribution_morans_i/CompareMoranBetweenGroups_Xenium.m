@@ -38,7 +38,7 @@ clear; clc; close all;
 % =============================
 
 scriptDir = fileparts(mfilename('fullpath'));
-inputFolder  = fullfile(scriptDir, 'data', 'xenium');   % edit if needed
+inputFolder  = fullfile(scriptDir, '..', '..', '..', 'data', 'xenium');   % repo data/xenium (from Zenodo)
 outputFolder = fullfile(scriptDir, 'results', 'xenium_moran');
 
 if ~exist(outputFolder, "dir")
@@ -139,8 +139,7 @@ cutoff_FDR = 0.15;
 applyPCutoffForReporting = false;
 
 %% =============================
-% EXAMPLE sample list
-% Replace filenames with your own CSV basenames in inputFolder.
+% Sample list (published Xenium names)
 % Required columns: gene, region_name, global_x_um, global_y_um, Z_um
 % (aliases such as x/y/z or region are also accepted).
 %
@@ -148,54 +147,55 @@ applyPCutoffForReporting = false;
 % from the same animal are averaged in averageSectionsToAnimals before
 % group comparison. Groups must be "WT" or "FAD". After averaging, keep
 % equal animal counts in each group (here 2+2).
+% Place renamed Archive CSV files in data/xenium/.
 % =============================
 
 samples = struct();
 
-% WT1: two sections averaged to animal "WT1"
-samples(1).name = "WT1_sectionA";
+% WT_6: two sections averaged to animal "WT_6"
+samples(1).name = "WT_6_R1";
 samples(1).group = "WT";
 samples(1).files = {
-    "WT_animal1_sectionA.csv"
+    "WT_6_R1.csv"
     };
 
-samples(2).name = "WT1_sectionB";
+samples(2).name = "WT_6_R2";
 samples(2).group = "WT";
 samples(2).files = {
-    "WT_animal1_sectionB.csv"
+    "WT_6_R2.csv"
     };
 
-% WT2: single section
-samples(3).name = "WT2";
+% WT_5: single section
+samples(3).name = "WT_5";
 samples(3).group = "WT";
 samples(3).files = {
-    "WT_animal2.csv"
+    "WT_5.csv"
     };
 
-% FAD1: two sections averaged to animal "FAD1"
-samples(4).name = "FAD1_sectionA";
+% 5xFAD_5: two sections averaged to animal "5xFAD_5"
+samples(4).name = "5xFAD_5_R1";
 samples(4).group = "FAD";
 samples(4).files = {
-    "FAD_animal1_sectionA.csv"
+    "5xFAD_5_R1.csv"
     };
 
-samples(5).name = "FAD1_sectionB";
+samples(5).name = "5xFAD_5_R2";
 samples(5).group = "FAD";
 samples(5).files = {
-    "FAD_animal1_sectionB.csv"
+    "5xFAD_5_R2.csv"
     };
 
-% FAD2: single section
-samples(6).name = "FAD2";
+% 5xFAD_6: single section
+samples(6).name = "5xFAD_6";
 samples(6).group = "FAD";
 samples(6).files = {
-    "FAD_animal2.csv"
+    "5xFAD_6.csv"
     };
 
 sectionSampleNames = string({samples.name});
 
 % Animal-level names after section averaging (must match averageSectionsToAnimals)
-sampleNames = ["WT1", "WT2", "FAD1", "FAD2"];
+sampleNames = ["WT_6", "WT_5", "5xFAD_5", "5xFAD_6"];
 sampleGroups = ["WT", "WT", "FAD", "FAD"];
 
 wtSampleNames = sampleNames(sampleGroups == "WT");
@@ -730,16 +730,16 @@ end
 
 function animalWideTable = averageSectionsToAnimals(sectionWideTable)
 % Average multi-section animals to one column each.
-% Edit this helper if your EXAMPLE sample list uses different section names.
+% Edit this helper if the sample list uses different section names.
 
     animalWideTable = sectionWideTable(:, {'gene', 'region_name'});
 
-    animalWideTable.WT1 = averageAvailableColumns( ...
-        sectionWideTable, ["WT1_sectionA", "WT1_sectionB"]);
-    animalWideTable.WT2 = sectionWideTable.WT2;
-    animalWideTable.FAD1 = averageAvailableColumns( ...
-        sectionWideTable, ["FAD1_sectionA", "FAD1_sectionB"]);
-    animalWideTable.FAD2 = sectionWideTable.FAD2;
+    animalWideTable.("WT_6") = averageAvailableColumns( ...
+        sectionWideTable, ["WT_6_R1", "WT_6_R2"]);
+    animalWideTable.("WT_5") = sectionWideTable.("WT_5");
+    animalWideTable.("5xFAD_5") = averageAvailableColumns( ...
+        sectionWideTable, ["5xFAD_5_R1", "5xFAD_5_R2"]);
+    animalWideTable.("5xFAD_6") = sectionWideTable.("5xFAD_6");
 end
 
 

@@ -26,7 +26,7 @@ if nargin < 1 || strlength(string(outputFolder)) == 0
     outputFolder = fullfile(scriptDir, 'results', 'exseq_spatial_distribution');
 end
 if nargin < 2 || strlength(string(inputFolder)) == 0
-    inputFolder = fullfile(scriptDir, 'data', 'exseq');
+    inputFolder = fullfile(scriptDir, '..', '..', '..', 'data', 'exseq');
 end
 if nargin < 3 || strlength(string(referenceImagePath)) == 0
     referenceImagePath = fullfile(scriptDir, ...

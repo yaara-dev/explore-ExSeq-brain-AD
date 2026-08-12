@@ -30,7 +30,7 @@ Click the link above to explore the spatial genomics data with interactive 2D an
 
 **5xFAD:** `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`, `5xFAD_4`, `5xFAD_5`, `5xFAD_6.1`, `5xFAD_6.2`
 
-All samples use normalized CSV format with 5 files per sample located in `data/all_samples/`.
+All samples use a **separated/normalized** CSV format with 5 files per sample in `data/viewer_normalized/` (for the web viewer).
 
 ---
 
@@ -64,7 +64,8 @@ The following information is only relevant if you want to modify or extend the v
 **Data Explorer Components:**
 - `index.html` - Main visualization file (contains 2D view, 3D view, and dashboard)
 - `data/csvs/manifest.json` - Sample manifest file (auto-generated)
-- `data/all_samples/` - Normalized CSV files (5 files per sample)
+- `data/viewer_normalized/` - Separated normalized CSVs for the web viewer (5 files per sample)
+- `data/exseq/`, `data/xenium/`, `data/xenium_full_sections/` - Analysis tables (download from Zenodo; see [data/README.md](data/README.md))
 - `data_explorer_scripts/` - Data generation and normalization scripts
   - `generate_manifest.py` - Generates manifest.json from CSV files
   - `add_cell_types.py` - Adds cell type information to CSV files
@@ -76,6 +77,18 @@ The following information is only relevant if you want to modify or extend the v
   - `expression_spatial_distribution_morans_i/` - Expression, spatial distribution/localization, and Moran’s I (MATLAB)
   - `rna_velocity/` - RNA velocity analysis (Python)
   - `svg_neighborhood_analysis/` - SVG neighborhood analysis (Python)
+
+### Analysis data (Zenodo)
+
+Large ExSeq/Xenium tables are **not** stored in git. To run the MATLAB analyses:
+
+1. Clone this repository.
+2. Download the data deposit from Zenodo (DOI: *add after publishing*).
+3. Unpack so these folders are populated:
+   - `data/exseq/`
+   - `data/xenium/`
+   - `data/xenium_full_sections/`
+4. Run the scripts under `analysis_scripts/expression_spatial_distribution_morans_i/` — they already point at those paths.
 
 ### Data Format
 
@@ -112,14 +125,14 @@ The visualization uses a normalized CSV structure with 5 files per sample:
 
 The project uses GitHub Actions for automatic deployment. The workflow (`.github/workflows/deploy.yml`) automatically:
 - Generates the manifest file
-- Deploys to GitHub Pages on changes to `index.html`, `data/all_samples/`, or `data_explorer_scripts/generate_manifest.py`
+- Deploys to GitHub Pages on changes to `index.html`, `data/viewer_normalized/`, or `data_explorer_scripts/generate_manifest.py`
 
 ### Requirements
 
 **For Data Explorer:**
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 - Python 3 (for running scripts and local development)
-- Normalized CSV files in `data/all_samples/` folder
+- Separated normalized CSV files in `data/viewer_normalized/` folder
 
 **For Analysis Scripts:**
 - See individual analysis README files in `analysis_scripts/` for specific requirements

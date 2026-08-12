@@ -34,7 +34,7 @@ clear; clc; close all;
 % =============================
 
 scriptDir = fileparts(mfilename('fullpath'));
-inputFolder  = fullfile(scriptDir, 'data', 'xenium_full_sections');   % edit if needed
+inputFolder  = fullfile(scriptDir, '..', '..', '..', 'data', 'xenium_full_sections');   % repo data/xenium_full_sections (from Zenodo)
 outputFolder = fullfile(scriptDir, 'results', 'xenium_full_sections_expression');
 
 % false = compare per gene and mapped brain region
@@ -137,39 +137,39 @@ end
 rng(1);
 
 %% =============================
-% EXAMPLE sample list
-% Replace filenames with your own Parquet basenames in inputFolder.
+% Sample list (published Xenium names)
 % Required columns: gene, region_name (and cell_type if useCellTypes=true).
 % Groups must be "WT" or "FAD". Keep equal counts in each group (here 2+2).
 % Multiple files listed for one sample are merged before counting.
+% Place renamed Archive parquet files in data/xenium_full_sections/.
 % =============================
 
 samples = struct();
 
-samples(1).name = "WT1";
+samples(1).name = "WT_5";
 samples(1).group = "WT";
 samples(1).files = {
-    "WT_animal1_sectionA.parquet"
-    "WT_animal1_sectionB.parquet"
+    "WT_5_s852_R3_full_regions_genes.parquet"
     };
 
-samples(2).name = "WT2";
+samples(2).name = "WT_6";
 samples(2).group = "WT";
 samples(2).files = {
-    "WT_animal2.parquet"
+    "WT_6_s652_R1_full_regions_genes.parquet"
+    "WT_6_s652_R2_full_regions_genes.parquet"
     };
 
-samples(3).name = "FAD1";
+samples(3).name = "5xFAD_5";
 samples(3).group = "FAD";
 samples(3).files = {
-    "FAD_animal1_sectionA.parquet"
-    "FAD_animal1_sectionB.parquet"
+    "5xFAD_5_s852_R1_full_regions_genes.parquet"
+    "5xFAD_5_s852_R2_full_regions_genes.parquet"
     };
 
-samples(4).name = "FAD2";
+samples(4).name = "5xFAD_6";
 samples(4).group = "FAD";
 samples(4).files = {
-    "FAD_animal2.parquet"
+    "5xFAD_6_s652_R3_full_regions_genes.parquet"
     };
 
 sampleNames = string({samples.name});

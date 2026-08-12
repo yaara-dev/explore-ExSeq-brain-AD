@@ -8,36 +8,39 @@ MATLAB analysis scripts for comparing **WT** vs **5xFAD** spatial transcriptomic
 - **Bioinformatics Toolbox** — required for `rnaseqde` in the expression scripts (default statistical test)
 - **Parquet support** — required only for `CompareExpressionBetweenGroups_Xenium_FullSections_AllGenes.m` (`parquetread` / related functions)
 
-Transcript data files are **not** bundled. Place your files under `data/` as described below, then edit each script’s EXAMPLE sample list to match your filenames.
+Transcript data files are **not** bundled in git. Download them from Zenodo (see root / `data/README.md`), place them under the repo `data/` folders described below, then run the scripts. Sample lists already use the published basenames.
 
 ## Folder layout
 
 ```text
-expression_spatial_distribution_morans_i/
-  README.md
+explore-ExSeq-brain-AD/                         # repository root
   data/
-    exseq/                    # ExSeq transcript CSVs
-    xenium/                   # Xenium transcript CSVs
-    xenium_full_sections/     # Xenium full-section Parquet files
-  results/                    # created/used by scripts (default outputs)
-  CompareExpressionBetweenGroups_ExSeq.m
-  CompareExpressionBetweenGroups_Xenium.m
-  CompareExpressionBetweenGroups_Xenium_FullSections_AllGenes.m
-  CompareMoranBetweenGroups_ExSeq.m
-  CompareMoranBetweenGroups_Xenium.m
-  ExSeqSpatialDistributionXY.m
-  exseq_spatial_calls.csv     # gene–region calls for spatial screening
-  hippocampus_reference_map.png
+    exseq/                    # ExSeq joined CSVs (from Zenodo)
+    xenium/                   # Xenium CSVs (from Zenodo)
+    xenium_full_sections/     # Xenium full-section Parquet (from Zenodo)
+    viewer_normalized/        # web explorer CSVs (in git)
+  analysis_scripts/expression_spatial_distribution_morans_i/
+    README.md
+    results/                  # created/used by scripts (default outputs)
+    CompareExpressionBetweenGroups_ExSeq.m
+    CompareExpressionBetweenGroups_Xenium.m
+    CompareExpressionBetweenGroups_Xenium_FullSections_AllGenes.m
+    CompareMoranBetweenGroups_ExSeq.m
+    CompareMoranBetweenGroups_Xenium.m
+    ExSeqSpatialDistributionXY.m
+    exseq_spatial_calls.csv
+    hippocampus_reference_map.png
 ```
 
-Paths are resolved relative to each script’s location via `fileparts(mfilename('fullpath'))`. Edit the **USER SETTINGS** block at the top of a script if your data live elsewhere.
+Each script sets `inputFolder` to the matching repo-root folder via
+`fullfile(scriptDir, '..', '..', '..', 'data', ...)`. Edit **USER SETTINGS** only if your data live elsewhere.
 
 ## Quick start
 
-1. Copy your transcript files into the matching `data/` subfolder.
+1. Download the Zenodo data deposit and unpack into `data/exseq/`, `data/xenium/`, and/or `data/xenium_full_sections/` as needed.
 2. Open the script you want to run.
-3. In **USER SETTINGS**, confirm `inputFolder` / `outputFolder` (defaults usually need no change).
-4. Replace the **EXAMPLE sample list** filenames with your file basenames (keep the `name` / `group` / `files` structure).
+3. In **USER SETTINGS**, confirm `inputFolder` / `outputFolder` (defaults should already point at repo `data/`).
+4. Confirm the sample list basenames match the files you unpacked.
 5. Run the script from MATLAB (current folder can be anywhere; paths are script-relative).
 
 ### Sample list rules (all scripts)

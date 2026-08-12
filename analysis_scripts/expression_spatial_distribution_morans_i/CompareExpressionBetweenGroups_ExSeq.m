@@ -35,7 +35,7 @@ clear; clc; close all;
 % =============================
 
 scriptDir = fileparts(mfilename('fullpath'));
-inputFolder  = fullfile(scriptDir, 'data', 'exseq');   % edit if needed
+inputFolder  = fullfile(scriptDir, '..', '..', '..', 'data', 'exseq');   % repo data/exseq (from Zenodo)
 outputFolder = fullfile(scriptDir, 'results', 'exseq_expression');
 
 % false = compare per gene and hippocampal region

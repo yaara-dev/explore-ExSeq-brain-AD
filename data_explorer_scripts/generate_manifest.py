@@ -9,8 +9,8 @@ import os
 from pathlib import Path
 
 def generate_manifest():
-    """Generate manifest.json from CSV files in data/all_samples/"""
-    csv_dir = Path("data/all_samples")
+    """Generate manifest.json from CSV files in data/viewer_normalized/"""
+    csv_dir = Path("data/viewer_normalized")
     manifest_path = Path("data/csvs/manifest.json")
     
     if not csv_dir.exists():
