@@ -17,7 +17,7 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MAPPING = REPO_ROOT / "data" / "sample_mapping.json"
-DEFAULT_OUTPUT = REPO_ROOT / "data" / "all_samples"
+DEFAULT_OUTPUT = REPO_ROOT / "data" / "viewer_normalized"
 
 REQUIRED_REGION_COLUMNS = (
     "region_name",

@@ -1,10 +1,25 @@
 # Data Structure Documentation
 
-This document describes the structure, columns, and relationships of the spatial transcriptomics data files used in the ExSeq Brain AD study.
+This document describes the spatial transcriptomics files used in the ExSeq Brain AD study: where they live, how they relate, and (for the web viewer) the normalized 5-file CSV schema.
 
-## Overview
+## Data folders
 
-The data is stored in a **normalized CSV format** with **5 files per sample**. This normalized structure separates different types of information into distinct files. Each sample (e.g., `WT_1`, `5xFAD_1.1`) has its own set of 5 files located in `data/all_samples/`.
+| Folder | In git? | Purpose |
+|--------|---------|---------|
+| `data/viewer_normalized/` | Yes | Separated/normalized CSVs for the **web data explorer** (5 files per sample) |
+| `data/exseq/` | No (Zenodo) | Joined ExSeq transcript CSVs for MATLAB analyses |
+| `data/xenium/` | No (Zenodo) | Xenium transcript CSVs for MATLAB analyses |
+| `data/xenium_full_sections/` | No (Zenodo) | Xenium full-section Parquet for MATLAB analyses |
+| `data/csvs/manifest.json` | Yes | Explorer sample list (auto-generated) |
+| `data/sample_mapping.json` | Yes | Lab ID ↔ published name mapping for regenerating viewer CSVs |
+
+**Zenodo:** Publish `exseq/`, `xenium/`, and `xenium_full_sections/` as one deposit (complete analysis tables). Optionally include a copy of `viewer_normalized/`. After download, unpack into the matching folders under `data/`. MATLAB scripts already use those paths. DOI: *add after publishing*.
+
+---
+
+## Viewer normalized format (`data/viewer_normalized/`)
+
+The explorer uses a **normalized CSV format** with **5 files per sample**. This structure separates different types of information into distinct files. Each sample (e.g., `WT_1`, `5xFAD_1.1`) has its own set of 5 files in `data/viewer_normalized/`.
 
 ### Coordinate System
 
@@ -292,7 +307,7 @@ The `cell_type` column in `*_points_cells.csv` uses broad labels from supervised
 
 ## Sample Files
 
-All sample data files are located in `data/all_samples/`. Each sample has 5 files:
+All viewer sample data files are located in `data/viewer_normalized/`. Each sample has 5 files:
 - `{SAMPLE_NAME}_points.csv`
 - `{SAMPLE_NAME}_regions.csv`
 - `{SAMPLE_NAME}_points_regions.csv`
