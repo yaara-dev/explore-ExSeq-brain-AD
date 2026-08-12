@@ -78,12 +78,15 @@ The following information is only relevant if you want to modify or extend the v
   - `rna_velocity/` - RNA velocity analysis (Python)
   - `svg_neighborhood_analysis/` - SVG neighborhood analysis (Python)
 
-### Analysis data (Zenodo)
+### Zenodo archives
+
+- **Code** (this repository release): [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084)
+- **Analysis data** (ExSeq / Xenium tables): [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278)
 
 Large ExSeq/Xenium tables are **not** stored in git. To run the MATLAB analyses:
 
-1. Clone this repository.
-2. Download the data deposit from Zenodo (DOI: *add after publishing*).
+1. Clone this repository (or download the [code Zenodo archive](https://doi.org/10.5281/zenodo.21858084)).
+2. Download the [data deposit](https://doi.org/10.5281/zenodo.21903278).
 3. Unpack so these folders are populated:
    - `data/exseq/`
    - `data/xenium/`

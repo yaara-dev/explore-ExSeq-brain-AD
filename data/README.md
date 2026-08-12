@@ -13,7 +13,7 @@ This document describes the spatial transcriptomics files used in the ExSeq Brai
 | `data/csvs/manifest.json` | Yes | Explorer sample list (auto-generated) |
 | `data/sample_mapping.json` | Yes | Lab ID ↔ published name mapping for regenerating viewer CSVs |
 
-**Zenodo:** Publish `exseq/`, `xenium/`, and `xenium_full_sections/` as one deposit (complete analysis tables). Optionally include a copy of `viewer_normalized/`. After download, unpack into the matching folders under `data/`. MATLAB scripts already use those paths. DOI: *add after publishing*.
+**Zenodo:** Analysis tables (`exseq/`, `xenium/`, `xenium_full_sections/`) are in a separate deposit: [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278). After download, unpack into the matching folders under `data/`. MATLAB scripts already use those paths. The code/repository archive is [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084).
 
 ---
 
