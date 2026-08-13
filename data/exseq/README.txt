@@ -1,5 +1,5 @@
 Place the exseq analysis files from the Zenodo data deposit here:
-  https://doi.org/10.5281/zenodo.21903278
+  https://doi.org/10.5281/zenodo.21903277
 
 Expected layout after unpacking:
   data/exseq/   (this folder)

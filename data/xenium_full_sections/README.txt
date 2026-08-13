@@ -1,5 +1,5 @@
 Place the xenium_full_sections analysis files from the Zenodo data deposit here:
-  https://doi.org/10.5281/zenodo.21903278
+  https://doi.org/10.5281/zenodo.21903277
 
 Expected layout after unpacking:
   data/xenium_full_sections/   (this folder)

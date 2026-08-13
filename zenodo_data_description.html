@@ -1,0 +1,66 @@
+<h1>ExSeq Brain AD — analysis data (ExSeq / Xenium)</h1>
+
+<p>Spatial transcriptomics analysis tables and Xenium Ranger HTML reports from the ExSeq Brain AD study (wild-type and 5xFAD mouse hippocampus).</p>
+
+<p>This deposit provides the large input files used by the MATLAB expression / Moran’s I / full-section analyses. Companion <strong>code, scripts, and web explorer</strong> are published separately:</p>
+<ul>
+<li><strong>Code / repository:</strong> <a href="https://doi.org/10.5281/zenodo.17568649">https://doi.org/10.5281/zenodo.17568649</a></li>
+<li><strong>GitHub:</strong> <a href="https://github.com/yaara-dev/early-AD-data-code">https://github.com/yaara-dev/early-AD-data-code</a></li>
+<li><strong>Interactive ExSeq data explorer:</strong> <a href="https://yaara-dev.github.io/early-AD-data-code/">https://yaara-dev.github.io/early-AD-data-code/</a></li>
+</ul>
+
+<hr>
+
+<h2>Contents</h2>
+
+<p>The archive unpacks to four folders. Place them under <code>data/</code> in the code repository (so you get <code>data/exseq/</code>, <code>data/xenium/</code>, etc.):</p>
+
+<table>
+<tr><th>Folder</th><th>Contents</th></tr>
+<tr>
+<td><code>exseq/</code></td>
+<td>Joined ExSeq transcript CSVs for MATLAB analyses (16 samples: WT_1–WT_6.2 and 5xFAD_1.1–5xFAD_6.2)</td>
+</tr>
+<tr>
+<td><code>xenium/</code></td>
+<td>Xenium hippocampus transcript CSVs (WT_5, WT_6_section1/2, 5xFAD_5_section1/2, 5xFAD_6)</td>
+</tr>
+<tr>
+<td><code>xenium_full_sections/</code></td>
+<td>Xenium full-section Parquet tables (same animals/sections as above)</td>
+</tr>
+<tr>
+<td><code>xenium_html/</code></td>
+<td>Self-contained Xenium Ranger analysis-summary HTML reports (open in a browser; also included in the code deposit)</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>How to use</h2>
+
+<ol>
+<li>Clone or download the code archive: <a href="https://doi.org/10.5281/zenodo.17568649">https://doi.org/10.5281/zenodo.17568649</a></li>
+<li>Download this data archive and unpack into the repository’s <code>data/</code> directory.</li>
+<li>Run the MATLAB scripts under <code>analysis_scripts/expression_spatial_distribution_morans_i/</code>. They already point at <code>data/exseq/</code>, <code>data/xenium/</code>, and <code>data/xenium_full_sections/</code>.</li>
+</ol>
+
+<p>For column schemas and sample lists, see <a href="https://github.com/yaara-dev/early-AD-data-code/blob/main/data/README.md">data/README.md</a> in the code repository.</p>
+
+<hr>
+
+<h2>Xenium samples (published names)</h2>
+
+<p><strong>WT:</strong> <code>WT_5</code>, <code>WT_6_section1</code>, <code>WT_6_section2</code><br>
+<strong>5xFAD:</strong> <code>5xFAD_5_section1</code>, <code>5xFAD_5_section2</code>, <code>5xFAD_6</code></p>
+
+<p>Multi-section animals use <code>_section1</code> / <code>_section2</code> suffixes. Single-section animals (<code>WT_5</code>, <code>5xFAD_6</code>) have no section suffix.</p>
+
+<hr>
+
+<h2>Related deposits</h2>
+
+<ul>
+<li><strong>This record (analysis data):</strong> <a href="https://doi.org/10.5281/zenodo.21903277">https://doi.org/10.5281/zenodo.21903277</a></li>
+<li><strong>Code / scripts / explorer:</strong> <a href="https://doi.org/10.5281/zenodo.17568649">https://doi.org/10.5281/zenodo.17568649</a></li>
+</ul>
