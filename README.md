@@ -34,6 +34,27 @@ All samples use a **separated/normalized** CSV format with 5 files per sample in
 
 ---
 
+## 📊 Analysis Scripts
+
+This repository includes four computational analysis pipelines for spatial transcriptomics data:
+
+1. **Cell Typing** - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation
+2. **Expression, Spatial Distribution & Moran's I** - MATLAB scripts for differential expression, localization/spatial distribution, and Moran’s I
+3. **RNA Velocity** - Analysis of RNA velocity and spatial cell-state transitions
+4. **SVG Neighborhood Analysis** - Post-CELINA analysis of spatially variable genes and co-regulated modules
+
+Each analysis pipeline is self-contained with its own documentation, requirements, and example data.
+
+**📖 For detailed information about each analysis, see [analysis_scripts/README.md](analysis_scripts/README.md)**
+
+Each analysis directory contains its own README with:
+- Installation instructions
+- Input data format requirements
+- Step-by-step usage examples
+- Output format descriptions
+
+---
+
 ## 🔬 Xenium HTML viewers
 
 Self-contained **Xenium Ranger** analysis-summary reports for the Xenium samples. Open any `.html` file in a web browser (no server required) to inspect run quality, transcript and cell metrics, and spatial summaries.
@@ -53,28 +74,7 @@ Files live in [`data/xenium_html/`](data/xenium_html/) in this repository. The s
 | `5xFAD_5_section2_analysis_summary.html` |
 | `5xFAD_6_analysis_summary.html` |
 
-These reports are for visual exploration of the Xenium runs. They are not used by the MATLAB analysis scripts.
-
----
-
-## 📊 Analysis Scripts
-
-This repository includes four computational analysis pipelines for spatial transcriptomics data:
-
-1. **Cell Typing** - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation
-2. **Expression, Spatial Distribution & Moran's I** - MATLAB scripts for differential expression, localization/spatial distribution, and Moran’s I
-3. **RNA Velocity** - Analysis of RNA velocity and spatial cell-state transitions
-4. **SVG Neighborhood Analysis** - Post-CELINA analysis of spatially variable genes and co-regulated modules
-
-Each analysis pipeline is self-contained with its own documentation, requirements, and example data.
-
-**📖 For detailed information about each analysis, see [analysis_scripts/README.md](analysis_scripts/README.md)**
-
-Each analysis directory contains its own README with:
-- Installation instructions
-- Input data format requirements
-- Step-by-step usage examples
-- Output format descriptions
+These reports are for visual exploration of the Xenium runs. They are not used by the analysis scripts.
 
 ---
 
