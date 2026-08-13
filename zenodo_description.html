@@ -1,0 +1,134 @@
+<h1>ExSeq Brain AD - Spatial Genomics Data Explorer &amp; Analysis Scripts</h1>
+<p>This repository contains an interactive web-based data explorer, Xenium HTML viewers, and computational analysis pipelines for spatial transcriptomics data from the ExSeq Brain AD study.</p>
+<hr>
+<h2>🚀 Data Explorer</h2>
+<p><strong>The full interactive data explorer is available via GitHub Pages:</strong></p>
+<p>👉 <strong><a href="https://yaara-dev.github.io/early-AD-data-code/">https://yaara-dev.github.io/early-AD-data-code/</a></strong></p>
+<p>Click the link above to explore the spatial genomics data with interactive 2D and 3D visualizations, filtering options, and comprehensive dashboards.</p>
+<p><strong>📋 For detailed information about data structure, column descriptions, and file relationships, see <a href="https://github.com/yaara-dev/early-AD-data-code/blob/main/data/README.md">data/README.md</a></strong></p>
+<h3>Features</h3>
+<ul>
+<li><strong>Multi-sample support:</strong> Browse between different samples</li>
+<li><strong>Interactive 2D scatter plot:</strong> Visualize spatial data with x/y coordinates</li>
+<li><strong>Interactive 3D scatter plot:</strong> Explore data in three dimensions with rotation and zoom</li>
+<li><strong>Comprehensive dashboard:</strong> View statistics, heatmaps, distributions, and more</li>
+<li><strong>Filtering:</strong> Filter by region, gene, cell type, and Z-slice</li>
+<li><strong>Statistics:</strong> View total records, unique genes, regions, and visible points</li>
+<li><strong>Tooltips:</strong> Hover over points to see detailed information</li>
+</ul>
+<h3>Samples Available</h3>
+<p><strong>WT:</strong> <code>WT_1</code>, <code>WT_2.1</code>, <code>WT_2.2</code>, <code>WT_3</code>, <code>WT_4</code>, <code>WT_5</code>, <code>WT_6.1</code>, <code>WT_6.2</code></p>
+<p><strong>5xFAD:</strong> <code>5xFAD_1.1</code>, <code>5xFAD_1.2</code>, <code>5xFAD_2</code>, <code>5xFAD_3</code>, <code>5xFAD_4</code>, <code>5xFAD_5</code>, <code>5xFAD_6.1</code>, <code>5xFAD_6.2</code></p>
+<p>All samples use a <strong>separated/normalized</strong> CSV format with 5 files per sample in <code>data/viewer_normalized/</code> (for the web viewer).</p>
+<hr>
+<h2>📊 Analysis Scripts</h2>
+<p>This repository includes four computational analysis pipelines for spatial transcriptomics data:</p>
+<ol>
+<li><strong>Cell Typing</strong> - Supervised STELLAR encoder label transfer for ExSeq cell-type annotation</li>
+<li><strong>Expression, Spatial Distribution &amp; Moran&#x27;s I</strong> - MATLAB scripts for differential expression, localization/spatial distribution, and Moran’s I</li>
+<li><strong>RNA Velocity</strong> - Analysis of RNA velocity and spatial cell-state transitions</li>
+<li><strong>SVG Neighborhood Analysis</strong> - Post-CELINA analysis of spatially variable genes and co-regulated modules</li>
+</ol>
+<p>Each analysis pipeline is self-contained with its own documentation, requirements, and example data.</p>
+<p><strong>📖 For detailed information about each analysis, see <a href="https://github.com/yaara-dev/early-AD-data-code/blob/main/analysis_scripts/README.md">analysis_scripts/README.md</a></strong></p>
+<p>Each analysis directory contains its own README with:</p>
+<ul>
+<li>Installation instructions</li>
+<li>Input data format requirements</li>
+<li>Step-by-step usage examples</li>
+<li>Output format descriptions</li>
+</ul>
+<hr>
+<h2>🔬 Xenium HTML viewers</h2>
+<p>Self-contained <strong>Xenium Ranger</strong> analysis-summary reports for the Xenium samples. Open any <code>.html</code> file in a web browser (no server required) to inspect run quality, transcript and cell metrics, and spatial summaries.</p>
+<p>Files live in <a href="https://github.com/yaara-dev/early-AD-data-code/tree/main/data/xenium_html/"><code>data/xenium_html/</code></a> in this repository. The same reports are also included in both Zenodo deposits (<a href="https://doi.org/10.5281/zenodo.17568649">code</a> and <a href="https://doi.org/10.5281/zenodo.21903277">analysis data</a>).</p>
+<p><strong>WT:</strong> <code>WT_5</code>, <code>WT_6_section1</code>, <code>WT_6_section2</code></p>
+<p><strong>5xFAD:</strong> <code>5xFAD_5_section1</code>, <code>5xFAD_5_section2</code>, <code>5xFAD_6</code></p>
+<table>
+<tr><th>File</th></tr>
+<tr><td><code>WT_5_analysis_summary.html</code></td></tr>
+<tr><td><code>WT_6_section1_analysis_summary.html</code></td></tr>
+<tr><td><code>WT_6_section2_analysis_summary.html</code></td></tr>
+<tr><td><code>5xFAD_5_section1_analysis_summary.html</code></td></tr>
+<tr><td><code>5xFAD_5_section2_analysis_summary.html</code></td></tr>
+<tr><td><code>5xFAD_6_analysis_summary.html</code></td></tr>
+</table>
+<p>These reports are for visual exploration of the Xenium runs. They are not used by the analysis scripts.</p>
+<hr>
+<h2>For Developers</h2>
+<p>The following information is only relevant if you want to modify or extend the visualization code.</p>
+<h3>Project Structure</h3>
+<p><strong>Data Explorer Components:</strong></p>
+<ul>
+<li><code>index.html</code> - Main visualization file (contains 2D view, 3D view, and dashboard)</li>
+<li><code>data/csvs/manifest.json</code> - Sample manifest file (auto-generated)</li>
+<li><code>data/viewer_normalized/</code> - Separated normalized CSVs for the web viewer (5 files per sample)</li>
+<li><code>data/exseq/</code>, <code>data/xenium/</code>, <code>data/xenium_full_sections/</code> - Analysis tables (download from the <a href="https://doi.org/10.5281/zenodo.21903277">data deposit</a>; see <a href="https://github.com/yaara-dev/early-AD-data-code/blob/main/data/README.md">data/README.md</a>)</li>
+<li><code>data/xenium_html/</code> - Xenium Ranger HTML reports (in this repository, and also in both Zenodo deposits)</li>
+<li><code>data_explorer_scripts/</code> - Data generation and normalization scripts</li>
+</ul>
+<p>  - <code>generate_manifest.py</code> - Generates manifest.json from CSV files<br>  - <code>add_cell_types.py</code> - Adds cell type information to CSV files<br>  - <code>server.py</code> - Local development server with cache control</p>
+<p><strong>Analysis Scripts:</strong></p>
+<ul>
+<li><code>analysis_scripts/</code> - Computational analysis pipelines</li>
+</ul>
+<p>  - <code>cell_typing/</code> - Supervised STELLAR encoder label transfer (Python)<br>  - <code>expression_spatial_distribution_morans_i/</code> - Expression, spatial distribution/localization, and Moran’s I (MATLAB)<br>  - <code>rna_velocity/</code> - RNA velocity analysis (Python)<br>  - <code>svg_neighborhood_analysis/</code> - SVG neighborhood analysis (Python)</p>
+<h3>Zenodo archives</h3>
+<ul>
+<li><strong>Code</strong> (this repository release, including Xenium Ranger HTML reports): <a href="https://doi.org/10.5281/zenodo.17568649">https://doi.org/10.5281/zenodo.17568649</a></li>
+<li><strong>Analysis data</strong> (ExSeq / Xenium tables, and the same Xenium Ranger HTML reports): <a href="https://doi.org/10.5281/zenodo.21903277">https://doi.org/10.5281/zenodo.21903277</a></li>
+</ul>
+<p>Large ExSeq/Xenium tables are <strong>not</strong> stored in git. To run the MATLAB analyses:</p>
+<ol>
+<li>Clone this repository (or download the <a href="https://doi.org/10.5281/zenodo.17568649">code Zenodo archive</a>).</li>
+<li>Download the <a href="https://doi.org/10.5281/zenodo.21903277">data deposit</a>.</li>
+<li>Unpack so these folders are populated:</li>
+</ol>
+<p>   - <code>data/exseq/</code><br>   - <code>data/xenium/</code><br>   - <code>data/xenium_full_sections/</code></p>
+<ol>
+<li>Run the scripts under <code>analysis_scripts/expression_spatial_distribution_morans_i/</code> — they already point at those paths.</li>
+</ol>
+<p>Xenium Ranger HTML reports are in <code>data/xenium_html/</code> in this repository (open in a browser). They are also included in both Zenodo deposits. They are not used by the MATLAB scripts.</p>
+<h3>Data Format</h3>
+<p>The visualization uses a normalized CSV structure with 5 files per sample:</p>
+<ul>
+<li><code>*_points.csv</code> - Point data (point_id, gene, Z, X, Y, fov)</li>
+<li><code>*_regions.csv</code> - Region information (region_id, region_name, region_area, region_proportion)</li>
+<li><code>*_points_regions.csv</code> - Point-to-region mapping (point_id, region_id)</li>
+<li><code>*_cells.csv</code> - Cell information (cell_id, cell_type)</li>
+<li><code>*_points_cells.csv</code> - Point-to-cell mapping (point_id, cell_id)</li>
+</ul>
+<p><strong>📋 For detailed information about data structure, column descriptions, and file relationships, see <a href="https://github.com/yaara-dev/early-AD-data-code/blob/main/data/README.md">data/README.md</a></strong></p>
+<h3>Local Development</h3>
+<ol>
+<li><strong>Generate the manifest file</strong> (if data changes):</li>
+</ol>
+<p>   ```bash<br>   python3 data_explorer_scripts/generate_manifest.py<br>   ```</p>
+<ol>
+<li><strong>Run a local server:</strong></li>
+</ol>
+<p>   ```bash<br>   python3 data_explorer_scripts/server.py<br>   ```<br>   Or use Python&#x27;s built-in server:<br>   ```bash<br>   python3 -m http.server 8000<br>   ```</p>
+<ol>
+<li><strong>Open in browser:</strong></li>
+</ol>
+<p>   - Go to <code>http://localhost:8000</code><br>   - The visualization will automatically load the manifest and first sample</p>
+<h3>Deployment</h3>
+<p>The project uses GitHub Actions for automatic deployment. The workflow (<code>.github/workflows/deploy.yml</code>) automatically:</p>
+<ul>
+<li>Generates the manifest file</li>
+<li>Deploys to GitHub Pages on changes to <code>index.html</code>, <code>data/viewer_normalized/</code>, or <code>data_explorer_scripts/generate_manifest.py</code></li>
+</ul>
+<h3>Requirements</h3>
+<p><strong>For Data Explorer:</strong></p>
+<ul>
+<li>A modern web browser (Chrome, Firefox, Safari, Edge)</li>
+<li>Python 3 (for running scripts and local development)</li>
+<li>Separated normalized CSV files in <code>data/viewer_normalized/</code> folder</li>
+</ul>
+<p><strong>For Analysis Scripts:</strong></p>
+<ul>
+<li>See individual analysis README files in <code>analysis_scripts/</code> for specific requirements</li>
+<li>Most Python analyses require Python 3.8+ with scientific packages (pandas, numpy, scipy, etc.)</li>
+<li>Cell typing (<code>cell_typing/</code>) requires Python packages listed in <code>analysis_scripts/cell_typing/environment.yml</code></li>
+<li>Expression / spatial distribution / Moran’s I (<code>expression_spatial_distribution_morans_i/</code>) requires MATLAB (see that folder’s README for toolboxes)</li>
+</ul>

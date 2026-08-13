@@ -59,7 +59,7 @@ Each analysis directory contains its own README with:
 
 Self-contained **Xenium Ranger** analysis-summary reports for the Xenium samples. Open any `.html` file in a web browser (no server required) to inspect run quality, transcript and cell metrics, and spatial summaries.
 
-Files live in [`data/xenium_html/`](data/xenium_html/) in this repository. The same reports are also included in both Zenodo deposits ([code](https://doi.org/10.5281/zenodo.21858084) and [analysis data](https://doi.org/10.5281/zenodo.21903278)).
+Files live in [`data/xenium_html/`](data/xenium_html/) in this repository. The same reports are also included in both Zenodo deposits ([code](https://doi.org/10.5281/zenodo.17568649) and [analysis data](https://doi.org/10.5281/zenodo.21903277)).
 
 **WT:** `WT_5`, `WT_6_section1`, `WT_6_section2`
 
@@ -88,7 +88,7 @@ The following information is only relevant if you want to modify or extend the v
 - `index.html` - Main visualization file (contains 2D view, 3D view, and dashboard)
 - `data/csvs/manifest.json` - Sample manifest file (auto-generated)
 - `data/viewer_normalized/` - Separated normalized CSVs for the web viewer (5 files per sample)
-- `data/exseq/`, `data/xenium/`, `data/xenium_full_sections/` - Analysis tables (download from the [data deposit](https://doi.org/10.5281/zenodo.21903278); see [data/README.md](data/README.md))
+- `data/exseq/`, `data/xenium/`, `data/xenium_full_sections/` - Analysis tables (download from the [data deposit](https://doi.org/10.5281/zenodo.21903277); see [data/README.md](data/README.md))
 - `data/xenium_html/` - Xenium Ranger HTML reports (in this repository, and also in both Zenodo deposits)
 - `data_explorer_scripts/` - Data generation and normalization scripts
   - `generate_manifest.py` - Generates manifest.json from CSV files
@@ -104,13 +104,13 @@ The following information is only relevant if you want to modify or extend the v
 
 ### Zenodo archives
 
-- **Code** (this repository release, including Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084)
-- **Analysis data** (ExSeq / Xenium tables, and the same Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278)
+- **Code** (this repository release, including Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.17568649](https://doi.org/10.5281/zenodo.17568649)
+- **Analysis data** (ExSeq / Xenium tables, and the same Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.21903277](https://doi.org/10.5281/zenodo.21903277)
 
 Large ExSeq/Xenium tables are **not** stored in git. To run the MATLAB analyses:
 
-1. Clone this repository (or download the [code Zenodo archive](https://doi.org/10.5281/zenodo.21858084)).
-2. Download the [data deposit](https://doi.org/10.5281/zenodo.21903278).
+1. Clone this repository (or download the [code Zenodo archive](https://doi.org/10.5281/zenodo.17568649)).
+2. Download the [data deposit](https://doi.org/10.5281/zenodo.21903277).
 3. Unpack so these folders are populated:
    - `data/exseq/`
    - `data/xenium/`
