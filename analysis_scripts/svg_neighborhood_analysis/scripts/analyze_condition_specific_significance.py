@@ -56,12 +56,12 @@ SAMPLE_CONDITIONS = {
     "fem6_WT_11C9_left": "WT",
     "fem7_WT_12C8": "WT",
     # Xenium
-    "m12_s652_R1": "WT",
-    "m12_s652_R2": "WT",
-    "m11_s852_R3": "WT",
-    "m14_s652_R3": "5xFAD",
-    "m13_s852_R1": "5xFAD",
-    "m13_s852_R2": "5xFAD",
+    "WT_6_section1": "WT",
+    "WT_6_section2": "WT",
+    "WT_5": "WT",
+    "5xFAD_6": "5xFAD",
+    "5xFAD_5_section1": "5xFAD",
+    "5xFAD_5_section2": "5xFAD",
 }
 
 

@@ -1,6 +1,6 @@
 # ExSeq Brain AD - Spatial Genomics Data Explorer & Analysis Scripts
 
-This repository contains both an interactive web-based data explorer and computational analysis pipelines for spatial transcriptomics data from the ExSeq Brain AD study.
+This repository contains an interactive web-based data explorer, Xenium HTML viewers, and computational analysis pipelines for spatial transcriptomics data from the ExSeq Brain AD study.
 
 ---
 
@@ -31,6 +31,29 @@ Click the link above to explore the spatial genomics data with interactive 2D an
 **5xFAD:** `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`, `5xFAD_4`, `5xFAD_5`, `5xFAD_6.1`, `5xFAD_6.2`
 
 All samples use a **separated/normalized** CSV format with 5 files per sample in `data/viewer_normalized/` (for the web viewer).
+
+---
+
+## 🔬 Xenium HTML viewers
+
+Self-contained **Xenium Ranger** analysis-summary reports for the Xenium samples. Open any `.html` file in a web browser (no server required) to inspect run quality, transcript and cell metrics, and spatial summaries.
+
+Files live in [`data/xenium_html/`](data/xenium_html/) in this repository. The same reports are also included in both Zenodo deposits ([code](https://doi.org/10.5281/zenodo.21858084) and [analysis data](https://doi.org/10.5281/zenodo.21903278)).
+
+**WT:** `WT_5`, `WT_6_section1`, `WT_6_section2`
+
+**5xFAD:** `5xFAD_5_section1`, `5xFAD_5_section2`, `5xFAD_6`
+
+| File |
+|------|
+| `WT_5_analysis_summary.html` |
+| `WT_6_section1_analysis_summary.html` |
+| `WT_6_section2_analysis_summary.html` |
+| `5xFAD_5_section1_analysis_summary.html` |
+| `5xFAD_5_section2_analysis_summary.html` |
+| `5xFAD_6_analysis_summary.html` |
+
+These reports are for visual exploration of the Xenium runs. They are not used by the MATLAB analysis scripts.
 
 ---
 
@@ -65,7 +88,8 @@ The following information is only relevant if you want to modify or extend the v
 - `index.html` - Main visualization file (contains 2D view, 3D view, and dashboard)
 - `data/csvs/manifest.json` - Sample manifest file (auto-generated)
 - `data/viewer_normalized/` - Separated normalized CSVs for the web viewer (5 files per sample)
-- `data/exseq/`, `data/xenium/`, `data/xenium_full_sections/` - Analysis tables (download from Zenodo; see [data/README.md](data/README.md))
+- `data/exseq/`, `data/xenium/`, `data/xenium_full_sections/` - Analysis tables (download from the [data deposit](https://doi.org/10.5281/zenodo.21903278); see [data/README.md](data/README.md))
+- `data/xenium_html/` - Xenium Ranger HTML reports (in this repository, and also in both Zenodo deposits)
 - `data_explorer_scripts/` - Data generation and normalization scripts
   - `generate_manifest.py` - Generates manifest.json from CSV files
   - `add_cell_types.py` - Adds cell type information to CSV files
@@ -80,8 +104,8 @@ The following information is only relevant if you want to modify or extend the v
 
 ### Zenodo archives
 
-- **Code** (this repository release): [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084)
-- **Analysis data** (ExSeq / Xenium tables): [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278)
+- **Code** (this repository release, including Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084)
+- **Analysis data** (ExSeq / Xenium tables, and the same Xenium Ranger HTML reports): [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278)
 
 Large ExSeq/Xenium tables are **not** stored in git. To run the MATLAB analyses:
 
@@ -92,6 +116,8 @@ Large ExSeq/Xenium tables are **not** stored in git. To run the MATLAB analyses:
    - `data/xenium/`
    - `data/xenium_full_sections/`
 4. Run the scripts under `analysis_scripts/expression_spatial_distribution_morans_i/` — they already point at those paths.
+
+Xenium Ranger HTML reports are in `data/xenium_html/` in this repository (open in a browser). They are also included in both Zenodo deposits. They are not used by the MATLAB scripts.
 
 ### Data Format
 

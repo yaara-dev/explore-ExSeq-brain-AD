@@ -153,16 +153,16 @@ applyPCutoffForReporting = false;
 samples = struct();
 
 % WT_6: two sections averaged to animal "WT_6"
-samples(1).name = "WT_6_R1";
+samples(1).name = "WT_6_section1";
 samples(1).group = "WT";
 samples(1).files = {
-    "WT_6_R1.csv"
+    "WT_6_section1.csv"
     };
 
-samples(2).name = "WT_6_R2";
+samples(2).name = "WT_6_section2";
 samples(2).group = "WT";
 samples(2).files = {
-    "WT_6_R2.csv"
+    "WT_6_section2.csv"
     };
 
 % WT_5: single section
@@ -173,16 +173,16 @@ samples(3).files = {
     };
 
 % 5xFAD_5: two sections averaged to animal "5xFAD_5"
-samples(4).name = "5xFAD_5_R1";
+samples(4).name = "5xFAD_5_section1";
 samples(4).group = "FAD";
 samples(4).files = {
-    "5xFAD_5_R1.csv"
+    "5xFAD_5_section1.csv"
     };
 
-samples(5).name = "5xFAD_5_R2";
+samples(5).name = "5xFAD_5_section2";
 samples(5).group = "FAD";
 samples(5).files = {
-    "5xFAD_5_R2.csv"
+    "5xFAD_5_section2.csv"
     };
 
 % 5xFAD_6: single section
@@ -735,10 +735,10 @@ function animalWideTable = averageSectionsToAnimals(sectionWideTable)
     animalWideTable = sectionWideTable(:, {'gene', 'region_name'});
 
     animalWideTable.("WT_6") = averageAvailableColumns( ...
-        sectionWideTable, ["WT_6_R1", "WT_6_R2"]);
+        sectionWideTable, ["WT_6_section1", "WT_6_section2"]);
     animalWideTable.("WT_5") = sectionWideTable.("WT_5");
     animalWideTable.("5xFAD_5") = averageAvailableColumns( ...
-        sectionWideTable, ["5xFAD_5_R1", "5xFAD_5_R2"]);
+        sectionWideTable, ["5xFAD_5_section1", "5xFAD_5_section2"]);
     animalWideTable.("5xFAD_6") = sectionWideTable.("5xFAD_6");
 end
 
