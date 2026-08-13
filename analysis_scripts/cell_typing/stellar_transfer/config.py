@@ -184,7 +184,7 @@ def load_config(path: str | Path) -> RunConfig:
         excitatory_label=str(plot_raw.get("excitatory_label", "Excitatory_Neuron")),
         ca_plot_label=str(plot_raw.get("ca_plot_label", "CA_GLUT")),
         dg_plot_label=str(plot_raw.get("dg_plot_label", "DG_GLUT")),
-        ca_like_regions=tuple(str(x) for x in plot_raw.get("ca_like_regions", ["CA1", "CA3", "upper_CA1", "SO"])),
+        ca_like_regions=tuple(str(x) for x in plot_raw.get("ca_like_regions", ["CA1", "CA3", "SO"])),
         colors={str(k): str(v) for k, v in plot_raw.get("colors", {}).items()},
     )
 
