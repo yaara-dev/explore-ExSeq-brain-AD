@@ -67,7 +67,7 @@ plots:
   excitatory_label: Excitatory_Neuron
   ca_plot_label: CA_GLUT
   dg_plot_label: DG_GLUT
-  ca_like_regions: [CA1, CA3, upper_CA1, SO]
+  ca_like_regions: [CA1, CA3, SO]
   colors:
     CA_GLUT: "#FF1493"
     DG_GLUT: "#00D5FF"
