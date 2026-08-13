@@ -10,10 +10,11 @@ This document describes the spatial transcriptomics files used in the ExSeq Brai
 | `data/exseq/` | No (Zenodo) | Joined ExSeq transcript CSVs for MATLAB analyses |
 | `data/xenium/` | No (Zenodo) | Xenium transcript CSVs for MATLAB analyses |
 | `data/xenium_full_sections/` | No (Zenodo) | Xenium full-section Parquet for MATLAB analyses |
+| `data/xenium_html/` | Yes (also on both Zenodo deposits) | Xenium Ranger analysis-summary HTML reports (open in a browser) |
 | `data/csvs/manifest.json` | Yes | Explorer sample list (auto-generated) |
-| `data/sample_mapping.json` | Yes | Lab ID ↔ published name mapping for regenerating viewer CSVs |
+| `data/sample_mapping.json` | Yes | File mappings for regenerating viewer CSVs |
 
-**Zenodo:** Analysis tables (`exseq/`, `xenium/`, `xenium_full_sections/`) are in a separate deposit: [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278). After download, unpack into the matching folders under `data/`. MATLAB scripts already use those paths. The code/repository archive is [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084).
+**Zenodo:** Analysis tables (`exseq/`, `xenium/`, `xenium_full_sections/`) are in a separate deposit: [https://doi.org/10.5281/zenodo.21903278](https://doi.org/10.5281/zenodo.21903278). After download, unpack into the matching folders under `data/`. MATLAB scripts already use those paths. The code/repository archive is [https://doi.org/10.5281/zenodo.21858084](https://doi.org/10.5281/zenodo.21858084). Xenium Ranger HTML reports in `data/xenium_html/` are included in **both** deposits.
 
 ---
 
@@ -322,5 +323,5 @@ Available samples (16 total):
 **5xFAD**
 - `5xFAD_1.1`, `5xFAD_1.2`, `5xFAD_2`, `5xFAD_3`, `5xFAD_4`, `5xFAD_5`, `5xFAD_6.1`, `5xFAD_6.2`
 
-The explorer sample list is also recorded in `data/csvs/manifest.json`. Internal lab IDs and file mappings (for regenerating normalized CSVs) are in `data/sample_mapping.json`.
+The explorer sample list is also recorded in `data/csvs/manifest.json`. File mappings for regenerating normalized CSVs are in `data/sample_mapping.json`.
 

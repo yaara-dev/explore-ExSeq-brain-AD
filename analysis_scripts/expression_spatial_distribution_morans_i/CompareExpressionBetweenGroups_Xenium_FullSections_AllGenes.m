@@ -149,27 +149,27 @@ samples = struct();
 samples(1).name = "WT_5";
 samples(1).group = "WT";
 samples(1).files = {
-    "WT_5_s852_R3_full_regions_genes.parquet"
+    "WT_5_full_regions_genes.parquet"
     };
 
 samples(2).name = "WT_6";
 samples(2).group = "WT";
 samples(2).files = {
-    "WT_6_s652_R1_full_regions_genes.parquet"
-    "WT_6_s652_R2_full_regions_genes.parquet"
+    "WT_6_section1_full_regions_genes.parquet"
+    "WT_6_section2_full_regions_genes.parquet"
     };
 
 samples(3).name = "5xFAD_5";
 samples(3).group = "FAD";
 samples(3).files = {
-    "5xFAD_5_s852_R1_full_regions_genes.parquet"
-    "5xFAD_5_s852_R2_full_regions_genes.parquet"
+    "5xFAD_5_section1_full_regions_genes.parquet"
+    "5xFAD_5_section2_full_regions_genes.parquet"
     };
 
 samples(4).name = "5xFAD_6";
 samples(4).group = "FAD";
 samples(4).files = {
-    "5xFAD_6_s652_R3_full_regions_genes.parquet"
+    "5xFAD_6_full_regions_genes.parquet"
     };
 
 sampleNames = string({samples.name});

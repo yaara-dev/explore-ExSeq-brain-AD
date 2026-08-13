@@ -156,15 +156,15 @@ samples(1).files = {
 samples(2).name = "WT_6";
 samples(2).group = "WT";
 samples(2).files = {
-    "WT_6_R1.csv"
-    "WT_6_R2.csv"
+    "WT_6_section1.csv"
+    "WT_6_section2.csv"
     };
 
 samples(3).name = "5xFAD_5";
 samples(3).group = "FAD";
 samples(3).files = {
-    "5xFAD_5_R1.csv"
-    "5xFAD_5_R2.csv"
+    "5xFAD_5_section1.csv"
+    "5xFAD_5_section2.csv"
     };
 
 samples(4).name = "5xFAD_6";
